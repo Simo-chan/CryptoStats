@@ -1,4 +1,4 @@
-package com.example.cryptostats.util
+package com.example.cryptostats.core.domain.util
 
 typealias DomainError = Error
 
