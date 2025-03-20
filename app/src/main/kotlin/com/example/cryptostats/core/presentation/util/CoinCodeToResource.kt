@@ -1,4 +1,4 @@
-package com.example.cryptostats.util
+package com.example.cryptostats.core.presentation.util
 
 import com.example.cryptostats.R
 
