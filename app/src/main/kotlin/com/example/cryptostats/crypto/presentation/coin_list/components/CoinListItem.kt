@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.example.cryptostats.crypto.domain.Coin
 import com.example.cryptostats.crypto.presentation.models.CoinUI
 import com.example.cryptostats.crypto.presentation.models.toCoinUI
-import com.example.cryptostats.crypto.presentation.preview.PreviewLightAndDark
+import com.example.cryptostats.core.presentation.util.preview.PreviewLightAndDark
 import com.example.cryptostats.ui.theme.CryptoStatsTheme
 
 @Composable

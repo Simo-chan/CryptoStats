@@ -1,4 +1,4 @@
-package com.example.cryptostats.crypto.presentation.preview
+package com.example.cryptostats.core.presentation.util.preview
 
 import android.content.res.Configuration
 import androidx.compose.ui.tooling.preview.Preview

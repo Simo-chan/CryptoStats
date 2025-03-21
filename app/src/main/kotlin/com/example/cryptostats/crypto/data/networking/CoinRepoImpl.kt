@@ -19,7 +19,9 @@ class CoinRepoImpl(private val httpClient: HttpClient) : CoinRepo {
                 urlString = constructUrl("/assets")
             )
         }.map { response ->
-            response.data.map { it.toCoin() }
+            response.data
+                .filter { it.changePercent24Hr != null && it.priceUsd != null && it.marketCapUsd != null }
+                .map { it.toCoin() }
         }
     }
 }
