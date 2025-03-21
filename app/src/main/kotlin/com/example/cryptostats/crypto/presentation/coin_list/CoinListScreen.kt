@@ -54,11 +54,12 @@ fun CoinListScreen(
 fun CoinListScreenPreview() {
     CryptoStatsTheme {
         Surface {
-            CoinListScreen(state = CoinListState(
-                coins = (1..100).map {
-                    previewCoin.copy(id = it.toString())
-                }
-            )
+            CoinListScreen(
+                state = CoinListState(
+                    coins = (1..100).map {
+                        previewCoin.copy(id = it.toString())
+                    }
+                )
             )
         }
     }
