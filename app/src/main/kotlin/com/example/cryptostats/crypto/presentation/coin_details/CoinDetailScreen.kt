@@ -1,9 +1,10 @@
 package com.example.cryptostats.crypto.presentation.coin_details
 
-import android.util.Log.d
-import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -14,21 +15,27 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewDynamicColors
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.cryptostats.R
 import com.example.cryptostats.core.presentation.util.preview.PreviewLightAndDark
+import com.example.cryptostats.crypto.presentation.coin_details.components.InfoCard
 import com.example.cryptostats.crypto.presentation.coin_list.CoinListState
 import com.example.cryptostats.crypto.presentation.coin_list.components.previewCoin
+import com.example.cryptostats.crypto.presentation.models.toDisplayableNumber
 import com.example.cryptostats.ui.theme.CryptoStatsTheme
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CoinDetailScreen(
     state: CoinListState,
@@ -70,6 +77,41 @@ fun CoinDetailScreen(
                 fontWeight = FontWeight.Light,
                 textAlign = TextAlign.Center
             )
+            FlowRow(
+                modifier = Modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                InfoCard(
+                    title = stringResource(R.string.market_cap),
+                    formattedText = "$ ${coin.marketCapUsd.formatted}",
+                    icon = ImageVector.vectorResource(R.drawable.stock)
+                )
+                InfoCard(
+                    title = stringResource(R.string.price),
+                    formattedText = "$ ${coin.priceUsd.formatted}",
+                    icon = ImageVector.vectorResource(R.drawable.dollar)
+                )
+
+                val absoluteChangeFormatted =
+                    (coin.priceUsd.value * (coin.changePercent24Hr.value / 100))
+                        .toDisplayableNumber()
+                val isPositive = coin.changePercent24Hr.value > 0.0
+                val contentColor = if (isPositive) {
+                    Color.Green
+                } else {
+                    MaterialTheme.colorScheme.error
+                }
+                InfoCard(
+                    title = stringResource(id = R.string.change_24h),
+                    formattedText = absoluteChangeFormatted.formatted,
+                    icon = if (isPositive) {
+                        ImageVector.vectorResource(id = R.drawable.trending)
+                    } else {
+                        ImageVector.vectorResource(id = R.drawable.trending_down)
+                    },
+                    contentColor = contentColor
+                )
+            }
         }
     }
 }

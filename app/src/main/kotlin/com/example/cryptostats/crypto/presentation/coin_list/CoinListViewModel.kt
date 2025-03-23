@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.cryptostats.core.domain.util.onError
 import com.example.cryptostats.core.domain.util.onSuccess
 import com.example.cryptostats.crypto.domain.CoinRepo
+import com.example.cryptostats.crypto.presentation.models.CoinUI
 import com.example.cryptostats.crypto.presentation.models.toCoinUI
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.core.KoinApplication.Companion.init
+import java.time.ZonedDateTime
 
 class CoinListViewModel(
     private val coinRepo: CoinRepo,
@@ -30,10 +32,29 @@ class CoinListViewModel(
 
     fun onAction(action: CoinListAction) {
         when (action) {
-            is CoinListAction.OnCoinClick -> TODO()
+            is CoinListAction.OnCoinClick -> {
+                selectCoin(action.coinUI)
+            }
+
             is CoinListAction.OnRefresh -> {
                 getCoins()
             }
+        }
+    }
+
+    private fun selectCoin(coinUI: CoinUI) {
+        _state.update { it.copy(selectedCoin = coinUI) }
+        viewModelScope.launch {
+            coinRepo
+                .getCoinHistory(
+                    coinUI.id,
+                    startTime = ZonedDateTime.now().minusDays(5),
+                    endTime = ZonedDateTime.now()
+                )
+                .onSuccess { history ->
+                    TODO()
+                }
+                .onError { error -> _events.send(CoinListEvent.Error(error)) }
         }
     }
 

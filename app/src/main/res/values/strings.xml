@@ -5,4 +5,7 @@
     <string name="error_no_internet">No internet connection\n</string>
     <string name="error_server">Something went wrong on the server\n</string>
     <string name="error_unknown">Something went wrong, please try again later.</string>
+    <string name="market_cap">Market Capitalization</string>
+    <string name="price">Price\n</string>
+    <string name="change_24h">Change last 24h</string>
 </resources>
