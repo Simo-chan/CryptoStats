@@ -4,7 +4,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 
-data class CharStyle(
+data class ChartStyle(
     val chartLineColor: Color,
     val unselectedColor: Color,
     val selectedColor: Color,
