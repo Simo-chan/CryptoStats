@@ -1,6 +1,5 @@
 package com.example.cryptostats.crypto.presentation.coin_details
 
-import android.icu.number.NumberFormatter
 import java.text.NumberFormat
 import java.util.Locale
 
