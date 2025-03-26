@@ -22,6 +22,7 @@ import com.example.cryptostats.ui.theme.CryptoStatsTheme
 @Composable
 fun CoinListScreen(
     state: CoinListState,
+    onAction: (CoinListAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     if (state.isLoading) {
@@ -39,7 +40,7 @@ fun CoinListScreen(
             items(state.coins) { coinUI ->
                 CoinListItem(
                     coinUI = coinUI,
-                    onClick = {/*TODO*/ },
+                    onClick = { onAction(CoinListAction.OnCoinClick(coinUI)) },
                     modifier = Modifier.fillMaxWidth()
                 )
                 HorizontalDivider()
@@ -59,7 +60,8 @@ fun CoinListScreenPreview() {
                     coins = (1..100).map {
                         previewCoin.copy(id = it.toString())
                     }
-                )
+                ),
+                onAction = {}
             )
         }
     }

@@ -1,9 +1,8 @@
 package com.example.cryptostats.crypto.presentation.coin_details
 
-import android.R.attr.x
-import androidx.compose.ui.geometry.Rect
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
@@ -22,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
@@ -80,7 +80,22 @@ fun LineChart(
     }
 
     Canvas(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
+            .pointerInput(drawPoints, xLabelWidth) {
+                detectHorizontalDragGestures { change, _ ->
+                    val newSelectedDataPointIndex = getSelectedDataPointIndex(
+                        touchOffset = change.position.x,
+                        triggerWidth = xLabelWidth,
+                        drawPoints = drawPoints
+                    )
+                    isShowingDataPoints =
+                        (newSelectedDataPointIndex + visibleDataPointsIndices.first) in visibleDataPointsIndices
+                    if (isShowingDataPoints) {
+                        onSelectedDataPoint(dataPoints[newSelectedDataPointIndex])
+                    }
+                }
+            }
     ) {
         val minLabelSpacingY = style.minYLabelSpacing.toPx()
         val verticalPaddingPx = style.verticalPadding.toPx()
@@ -96,7 +111,11 @@ fun LineChart(
         val maxXLabelWidth = xLabelTextLayoutResults.maxOfOrNull { it.size.width } ?: 0
         val maxXLabelHeight = xLabelTextLayoutResults.maxOfOrNull { it.size.height } ?: 0
         val maxXLabelLineCount = xLabelTextLayoutResults.maxOfOrNull { it.lineCount } ?: 0
-        val xLabelLineHeight = maxXLabelHeight / maxXLabelLineCount
+        val xLabelLineHeight = if (maxXLabelLineCount > 0) {
+            maxXLabelHeight / maxXLabelLineCount
+        } else {
+            0
+        }
 
         val viewPortHeightPx = size.height - (maxXLabelHeight + 2 * verticalPaddingPx
                 + xLabelLineHeight + xAxisLabelSpacingPx)
@@ -128,18 +147,6 @@ fun LineChart(
         val viewPortRightX = size.width
         val viewPortBottomY = viewPortTopY + viewPortHeightPx
         val viewPortLeftX = 2f * horizontalPaddingPx + maxYLabelWidth
-        val viewPort = Rect(
-            left = viewPortLeftX,
-            right = viewPortRightX,
-            top = viewPortTopY,
-            bottom = viewPortBottomY
-        )
-
-        drawRect(
-            color = Color.Green.copy(alpha = 0.4f),
-            topLeft = viewPort.topLeft,
-            size = viewPort.size
-        )
 
         //X LABEL CALCULATIONS
         xLabelWidth = maxXLabelWidth + xAxisLabelSpacingPx
@@ -333,9 +340,21 @@ fun LineChart(
     }
 }
 
+private fun getSelectedDataPointIndex(
+    touchOffset: Float,
+    triggerWidth: Float,
+    drawPoints: List<DataPoint>,
+): Int {
+    val triggerRangeLeft = touchOffset - triggerWidth / 2f
+    val triggerRangeRight = touchOffset + triggerWidth / 2f
+    return drawPoints.indexOfFirst {
+        it.x in triggerRangeLeft..triggerRangeRight
+    }
+}
+
 @Preview(widthDp = 1000)
 @Composable
-fun LineChartPreview(modifier: Modifier = Modifier) {
+private fun LineChartPreview(modifier: Modifier = Modifier) {
     CryptoStatsTheme {
         val coinHistoryMock = remember {
             (1..20).map {
