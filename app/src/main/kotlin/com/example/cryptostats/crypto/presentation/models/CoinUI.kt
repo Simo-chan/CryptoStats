@@ -3,6 +3,7 @@ package com.example.cryptostats.crypto.presentation.models
 import androidx.annotation.DrawableRes
 import com.example.cryptostats.crypto.domain.Coin
 import com.example.cryptostats.core.presentation.util.getDrawableIdForCoin
+import com.example.cryptostats.crypto.presentation.coin_details.DataPoint
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -15,6 +16,7 @@ data class CoinUI(
     val priceUsd: DisplayableNumber,
     val changePercent24Hr: DisplayableNumber,
     @DrawableRes val iconRes: Int,
+    val coinPriceHistory: List<DataPoint> = emptyList()
 )
 
 data class DisplayableNumber(
