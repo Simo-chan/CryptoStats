@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,7 +43,7 @@ fun CoinListItem(
         Icon(
             imageVector = ImageVector.vectorResource(id = coinUI.iconRes),
             contentDescription = coinUI.name,
-            tint = MaterialTheme.colorScheme.primary,
+            tint = Color.Unspecified,
             modifier = Modifier.size(85.dp)
         )
 

@@ -70,7 +70,7 @@ fun CoinDetailScreen(
                 ),
                 contentDescription = coin.name,
                 modifier = Modifier.size(100.dp),
-                tint = MaterialTheme.colorScheme.primary
+                tint = Color.Unspecified
             )
             Text(
                 text = coin.name,
