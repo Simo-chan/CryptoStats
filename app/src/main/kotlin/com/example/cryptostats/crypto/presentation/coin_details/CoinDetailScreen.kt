@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -16,6 +17,8 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onSizeChanged
@@ -48,6 +52,8 @@ fun CoinDetailScreen(
     state: CoinListState,
     modifier: Modifier = Modifier,
 ) {
+    var showHelperLines by remember { mutableStateOf(true) }
+
     if (state.isLoading) {
         Box(
             modifier = modifier.fillMaxSize(),
@@ -118,7 +124,25 @@ fun CoinDetailScreen(
                     },
                     contentColor = contentColor
                 )
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier.padding(8.dp)
+                ) {
+                    Text("Helper lines")
+                    Switch(
+                        checked = showHelperLines,
+                        onCheckedChange = { showHelperLines = it },
+                        modifier = Modifier.scale(0.8f),
+                        colors = SwitchDefaults.colors(
+                            checkedThumbColor = MaterialTheme.colorScheme.primary,
+                            checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
+                            uncheckedThumbColor = MaterialTheme.colorScheme.secondary,
+                            uncheckedTrackColor = MaterialTheme.colorScheme.secondaryContainer,
+                        )
+                    )
+                }
             }
+
             AnimatedVisibility(
                 visible = coin.coinPriceHistory.isNotEmpty()
             ) {
@@ -164,7 +188,8 @@ fun CoinDetailScreen(
                     onSelectedDataPoint = {
                         selectedDataPoint = it
                     },
-                    onXLabelWidthChange = { labelWidth = it }
+                    onXLabelWidthChange = { labelWidth = it },
+                    showHelperLines = showHelperLines
                 )
             }
         }
