@@ -9,7 +9,6 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -20,7 +19,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -80,8 +78,8 @@ fun CoinListScreen(
                 )
             ) {
                 FloatingActionButton(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
                     onClick = {
                         coroutineScope.launch {
                             listState.animateScrollToItem(0)
@@ -97,11 +95,10 @@ fun CoinListScreen(
             }
         }
     }
-
 }
 
 @Composable
-fun CoinList(
+private fun CoinList(
     modifier: Modifier = Modifier,
     state: CoinListState,
     listState: LazyListState = rememberLazyListState(),
@@ -110,15 +107,13 @@ fun CoinList(
     LazyColumn(
         state = listState,
         modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
         items(state.coins) { coinUI ->
             CoinListItem(
                 coinUI = coinUI,
-                onClick = { onAction(CoinListAction.OnCoinClick(coinUI)) },
-                modifier = Modifier.fillMaxWidth()
+                onClick = { onAction(CoinListAction.OnCoinClick(coinUI)) }
             )
-            HorizontalDivider()
         }
     }
 }
@@ -126,7 +121,7 @@ fun CoinList(
 @PreviewLightDark
 @Preview(widthDp = 320, heightDp = 320)
 @Composable
-fun CoinListScreenPreview() {
+private fun CoinListScreenPreview() {
     CryptoStatsTheme {
         Surface {
             CoinListScreen(

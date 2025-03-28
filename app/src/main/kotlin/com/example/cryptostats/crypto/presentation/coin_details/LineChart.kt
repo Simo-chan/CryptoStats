@@ -323,15 +323,15 @@ fun LineChart(
                 if (selectedDataPointIndex == index) {
                     drawCircle(
                         color = Color.White,
-                        radius = 15f,
+                        radius = 10f,
                         center = circleOffset
                     )
                     drawCircle(
                         color = style.selectedColor,
-                        radius = 15f,
+                        radius = 10f,
                         center = circleOffset,
                         style = Stroke(
-                            width = 3f
+                            width = 1.5f
                         )
                     )
                 }
