@@ -1,5 +1,6 @@
 package com.example.cryptostats.crypto.presentation.coin_details
 
+import android.R.attr.visible
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,8 +40,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cryptostats.R
-import com.example.cryptostats.core.presentation.util.preview.PreviewLightAndDark
+import com.example.cryptostats.core.presentation.util.PreviewLightAndDark
 import com.example.cryptostats.crypto.presentation.coin_details.components.InfoCard
+import com.example.cryptostats.crypto.presentation.coin_details.custom_graph.ChartStyle
+import com.example.cryptostats.crypto.presentation.coin_details.custom_graph.DataPoint
+import com.example.cryptostats.crypto.presentation.coin_details.custom_graph.LineChart
 import com.example.cryptostats.crypto.presentation.coin_list.CoinListState
 import com.example.cryptostats.crypto.presentation.coin_list.components.previewCoin
 import com.example.cryptostats.crypto.presentation.models.toDisplayableNumber
@@ -116,7 +120,7 @@ fun CoinDetailScreen(
                 }
                 InfoCard(
                     title = stringResource(id = R.string.change_24h),
-                    formattedText = absoluteChangeFormatted.formatted,
+                    formattedText = "$${absoluteChangeFormatted.formatted}",
                     icon = if (isPositive) {
                         ImageVector.vectorResource(id = R.drawable.trending)
                     } else {

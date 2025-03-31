@@ -3,7 +3,7 @@ package com.example.cryptostats.crypto.presentation.models
 import androidx.annotation.DrawableRes
 import com.example.cryptostats.crypto.domain.Coin
 import com.example.cryptostats.core.presentation.util.getDrawableIdForCoin
-import com.example.cryptostats.crypto.presentation.coin_details.DataPoint
+import com.example.cryptostats.crypto.presentation.coin_details.custom_graph.DataPoint
 import java.text.NumberFormat
 import java.util.Locale
 

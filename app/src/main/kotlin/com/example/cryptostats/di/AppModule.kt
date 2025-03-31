@@ -1,6 +1,6 @@
 package com.example.cryptostats.di
 
-import com.example.cryptostats.core.data.networking.HttpClientFactory
+import com.example.cryptostats.core.data.networking.ktor.HttpClientFactory
 import com.example.cryptostats.crypto.data.networking.CoinRepoImpl
 import com.example.cryptostats.crypto.domain.CoinRepo
 import com.example.cryptostats.crypto.presentation.coin_list.CoinListViewModel

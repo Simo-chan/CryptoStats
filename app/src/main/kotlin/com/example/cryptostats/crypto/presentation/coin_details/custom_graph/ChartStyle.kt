@@ -1,4 +1,4 @@
-package com.example.cryptostats.crypto.presentation.coin_details
+package com.example.cryptostats.crypto.presentation.coin_details.custom_graph
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp

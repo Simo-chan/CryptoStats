@@ -8,4 +8,6 @@
     <string name="market_cap">Market Capitalization</string>
     <string name="price">Price\n</string>
     <string name="change_24h">Change last 24h</string>
+    <string name="favorites">Favorites\n</string>
+    <string name="top100">Top 100\n</string>
 </resources>

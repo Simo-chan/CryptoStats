@@ -1,4 +1,4 @@
-package com.example.cryptostats.core.data.networking
+package com.example.cryptostats.core.data.networking.ktor
 
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
@@ -16,11 +16,11 @@ import kotlinx.serialization.json.Json
 object HttpClientFactory {
     fun create(engine: HttpClientEngine): HttpClient {
         return HttpClient(engine) {
-            install(Logging) {
+            install(Logging.Companion) {
                 level = LogLevel.ALL
-                logger = Logger.ANDROID
+                logger = Logger.Companion.ANDROID
             }
-            install(ContentNegotiation) {
+            install(ContentNegotiation.Plugin) {
                 json(
                     json = Json {
                         ignoreUnknownKeys = true

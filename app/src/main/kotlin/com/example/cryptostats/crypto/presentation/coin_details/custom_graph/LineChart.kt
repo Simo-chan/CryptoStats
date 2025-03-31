@@ -1,4 +1,4 @@
-package com.example.cryptostats.crypto.presentation.coin_details
+package com.example.cryptostats.crypto.presentation.coin_details.custom_graph
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
