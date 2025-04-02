@@ -1,6 +1,5 @@
 package com.example.cryptostats.crypto.presentation.coin_details
 
-import android.R.attr.visible
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

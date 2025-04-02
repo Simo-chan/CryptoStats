@@ -38,13 +38,12 @@ fun FavoriteCoinCard(
     Card(
         modifier = modifier
             .shadow(
-                elevation = 12.dp,
-                shape = RoundedCornerShape(8.dp),
+                elevation = 16.dp,
+                shape = RoundedCornerShape(32.dp),
                 ambientColor = MaterialTheme.colorScheme.primary,
                 spotColor = MaterialTheme.colorScheme.primary
-            )
-            .size(width = 180.dp, height = 200.dp),
-        shape = RoundedCornerShape(16.dp),
+            ),
+        shape = RoundedCornerShape(32.dp),
 
         colors = CardDefaults.cardColors(
             contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
@@ -91,12 +90,13 @@ fun FavoriteCoinCard(
             val isPositive = coinUI.changePercent24Hr.value > 0
             Icon(
                 imageVector = if (isPositive) {
-                    ImageVector.vectorResource(id = R.drawable.trending)
+                    ImageVector.vectorResource(id = R.drawable.trending_up)
                 } else {
                     ImageVector.vectorResource(id = R.drawable.trending_down)
                 },
                 tint = Color.Unspecified,
-                contentDescription = null
+                contentDescription = null,
+                modifier = Modifier.size(32.dp)
             )
         }
     }

@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -23,8 +22,6 @@ import com.example.cryptostats.crypto.domain.Coin
 import com.example.cryptostats.crypto.presentation.models.CoinUI
 import com.example.cryptostats.crypto.presentation.models.toCoinUI
 import com.example.cryptostats.ui.theme.CryptoStatsTheme
-import com.example.cryptostats.ui.theme.brightGreen
-import com.example.cryptostats.ui.theme.brightRed
 
 @Composable
 fun CoinListItem(

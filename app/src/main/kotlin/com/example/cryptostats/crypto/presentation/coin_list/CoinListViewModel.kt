@@ -24,9 +24,6 @@ class CoinListViewModel(
     private val _state = MutableStateFlow(CoinListState())
     val state = _state.asStateFlow()
 
-    private val _events = Channel<CoinListEvent>()
-    val events = _events.receiveAsFlow()
-
     init {
         getCoins()
     }
@@ -36,11 +33,15 @@ class CoinListViewModel(
             is CoinListAction.OnCoinClick -> {
                 selectCoin(action.coinUI)
             }
+
+            is CoinListAction.OnRefresh -> {
+                getCoins()
+            }
         }
     }
 
     private fun selectCoin(coinUI: CoinUI) = viewModelScope.launch {
-        _state.update { it.copy(selectedCoin = coinUI) }
+        _state.update { it.copy(selectedCoin = coinUI, isError = false) }
         coinRepo
             .getCoinHistory(
                 coinUI.id,
@@ -68,14 +69,15 @@ class CoinListViewModel(
                     )
                 }
             }
-            .onError { error -> _events.send(CoinListEvent.Error(error)) }
+            .onError { error -> _state.update { it.copy(isError = true, errorMessage = error) } }
     }
 
 
     private fun getCoins() = viewModelScope.launch {
         _state.update {
             it.copy(
-                isLoading = true
+                isLoading = true,
+                isError = false
             )
         }
 
@@ -91,9 +93,8 @@ class CoinListViewModel(
             }
             .onError { error ->
                 _state.update {
-                    it.copy(isLoading = false)
+                    it.copy(isLoading = false, isError = true, errorMessage = error )
                 }
-                _events.send(CoinListEvent.Error(error))
             }
     }
 }
