@@ -1,8 +1,7 @@
-package com.example.cryptostats.core.presentation.util.preview
+package com.example.cryptostats.core.presentation.util
 
 import android.content.res.Configuration
 import androidx.compose.ui.tooling.preview.Preview
-
 
 @Preview(name = "Light", showBackground = true, backgroundColor = 0xffffffff)
 @Preview(

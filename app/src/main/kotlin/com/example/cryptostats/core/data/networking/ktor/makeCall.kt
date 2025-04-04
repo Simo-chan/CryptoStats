@@ -1,4 +1,4 @@
-package com.example.cryptostats.core.data.networking
+package com.example.cryptostats.core.data.networking.ktor
 
 import com.example.cryptostats.core.domain.util.NetworkError
 import com.example.cryptostats.core.domain.util.Result

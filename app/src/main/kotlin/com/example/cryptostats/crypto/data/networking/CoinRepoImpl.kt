@@ -1,7 +1,7 @@
 package com.example.cryptostats.crypto.data.networking
 
-import com.example.cryptostats.core.data.networking.constructUrl
-import com.example.cryptostats.core.data.networking.makeCall
+import com.example.cryptostats.core.data.networking.ktor.constructUrl
+import com.example.cryptostats.core.data.networking.ktor.makeCall
 import com.example.cryptostats.core.domain.util.NetworkError
 import com.example.cryptostats.core.domain.util.Result
 import com.example.cryptostats.core.domain.util.map

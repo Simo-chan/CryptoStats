@@ -1,4 +1,4 @@
-package com.example.cryptostats.crypto.presentation.coin_details
+package com.example.cryptostats.crypto.presentation.coin_details.custom_graph
 
 import java.text.NumberFormat
 import java.util.Locale

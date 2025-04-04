@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.cryptostats.core.domain.util.onError
 import com.example.cryptostats.core.domain.util.onSuccess
 import com.example.cryptostats.crypto.domain.CoinRepo
-import com.example.cryptostats.crypto.presentation.coin_details.DataPoint
+import com.example.cryptostats.crypto.presentation.coin_details.custom_graph.DataPoint
 import com.example.cryptostats.crypto.presentation.models.CoinUI
 import com.example.cryptostats.crypto.presentation.models.toCoinUI
 import kotlinx.coroutines.channels.Channel
@@ -24,9 +24,6 @@ class CoinListViewModel(
     private val _state = MutableStateFlow(CoinListState())
     val state = _state.asStateFlow()
 
-    private val _events = Channel<CoinListEvent>()
-    val events = _events.receiveAsFlow()
-
     init {
         getCoins()
     }
@@ -36,67 +33,68 @@ class CoinListViewModel(
             is CoinListAction.OnCoinClick -> {
                 selectCoin(action.coinUI)
             }
-        }
-    }
 
-    private fun selectCoin(coinUI: CoinUI) {
-        _state.update { it.copy(selectedCoin = coinUI) }
-        viewModelScope.launch {
-            coinRepo
-                .getCoinHistory(
-                    coinUI.id,
-                    startTime = ZonedDateTime.now().minusDays(5),
-                    endTime = ZonedDateTime.now()
-                )
-                .onSuccess { history ->
-                    val dataPoints = history
-                        .sortedBy { it.time }
-                        .map {
-                            DataPoint(
-                                x = it.time.hour.toFloat(),
-                                y = it.priceUsd.toFloat(),
-                                xLabel = DateTimeFormatter
-                                    .ofPattern("ha\nM/d")
-                                    .format(it.time)
-                            )
-                        }
-
-                    _state.update {
-                        it.copy(
-                            selectedCoin = it.selectedCoin?.copy(
-                                coinPriceHistory = dataPoints
-                            )
-                        )
-                    }
-                }
-                .onError { error -> _events.send(CoinListEvent.Error(error)) }
-        }
-    }
-
-    private fun getCoins() {
-        viewModelScope.launch {
-            _state.update {
-                it.copy(
-                    isLoading = true
-                )
+            is CoinListAction.OnRefresh -> {
+                getCoins()
             }
+        }
+    }
 
-            coinRepo
-                .getCoins()
-                .onSuccess { coins ->
-                    _state.update {
-                        it.copy(
-                            isLoading = false,
-                            coins = coins.map { it.toCoinUI() }
+    private fun selectCoin(coinUI: CoinUI) = viewModelScope.launch {
+        _state.update { it.copy(selectedCoin = coinUI, isError = false) }
+        coinRepo
+            .getCoinHistory(
+                coinUI.id,
+                startTime = ZonedDateTime.now().minusDays(5),
+                endTime = ZonedDateTime.now()
+            )
+            .onSuccess { history ->
+                val dataPoints = history
+                    .sortedBy { it.time }
+                    .map {
+                        DataPoint(
+                            x = it.time.hour.toFloat(),
+                            y = it.priceUsd.toFloat(),
+                            xLabel = DateTimeFormatter
+                                .ofPattern("ha\nM/d")
+                                .format(it.time)
                         )
                     }
+
+                _state.update {
+                    it.copy(
+                        selectedCoin = it.selectedCoin?.copy(
+                            coinPriceHistory = dataPoints
+                        )
+                    )
                 }
-                .onError { error ->
-                    _state.update {
-                        it.copy(isLoading = false)
-                    }
-                    _events.send(CoinListEvent.Error(error))
-                }
+            }
+            .onError { error -> _state.update { it.copy(isError = true, errorMessage = error) } }
+    }
+
+
+    private fun getCoins() = viewModelScope.launch {
+        _state.update {
+            it.copy(
+                isLoading = true,
+                isError = false
+            )
         }
+
+        coinRepo
+            .getCoins()
+            .onSuccess { coins ->
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        coins = coins.map { it.toCoinUI() }
+                    )
+                }
+            }
+            .onError { error ->
+                _state.update {
+                    it.copy(isLoading = false, isError = true, errorMessage = error )
+                }
+            }
     }
 }
