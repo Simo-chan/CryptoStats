@@ -1,6 +1,5 @@
 package com.example.cryptostats.crypto.presentation.coin_list.components
 
-import android.app.LocaleConfig
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -10,6 +9,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,11 +18,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import com.example.cryptostats.R
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -31,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cryptostats.ui.theme.CryptoStatsTheme
@@ -39,20 +43,14 @@ import com.example.cryptostats.ui.theme.CryptoStatsTheme
 fun ShimmerLoadingList(modifier: Modifier = Modifier) {
     val config = LocalConfiguration.current
     val screenHeight = config.screenHeightDp
-    val itemCount = remember(screenHeight) {
-        (screenHeight / 50) + 2
+    val screenWidth = config.screenWidthDp
+    val columnItemCount = remember(screenHeight) {
+        (screenHeight / 50)
+    }
+    val rowItemCount = remember(screenWidth) {
+        (screenWidth / 160) + 2
     }
 
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(itemCount) {
-            LoadingItem()
-        }
-    }
-}
-
-
-@Composable
-private fun LoadingItem(modifier: Modifier = Modifier) {
     val infiniteTransition = rememberInfiniteTransition(label = "infinite loading")
     val alpha by infiniteTransition.animateFloat(
         initialValue = 0.2f,
@@ -66,6 +64,67 @@ private fun LoadingItem(modifier: Modifier = Modifier) {
         ),
         label = "alpha"
     )
+
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        item {
+            Text(
+                text = stringResource(R.string.favorites),
+                style = MaterialTheme.typography.headlineLarge,
+                modifier = Modifier
+                    .padding(top = 45.dp)
+                    .padding(horizontal = 16.dp)
+            )
+        }
+
+        item {
+            LazyRow(contentPadding = PaddingValues(horizontal = 8.dp)) {
+                items(rowItemCount) {
+                    LoadingRowItem(alpha)
+                }
+            }
+        }
+
+        item {
+            Text(
+                text = stringResource(R.string.top100),
+                style = MaterialTheme.typography.headlineLarge,
+                modifier = Modifier
+                    .padding(top = 45.dp)
+                    .padding(horizontal = 16.dp)
+            )
+        }
+
+        items(columnItemCount) {
+            LoadingColumnItem(alpha)
+        }
+    }
+}
+
+@Composable
+private fun LoadingRowItem(
+    alpha: Float,
+    modifier: Modifier = Modifier,
+) {
+    Spacer(Modifier.padding(horizontal = 4.dp))
+    Box(
+        modifier = Modifier
+            .size(
+                height = 160.dp,
+                width = 160.dp
+            )
+            .background(
+                shape = RoundedCornerShape(32.dp),
+                color = Color.LightGray.copy(alpha = alpha)
+            )
+    )
+    Spacer(Modifier.padding(horizontal = 4.dp))
+}
+
+@Composable
+private fun LoadingColumnItem(
+    alpha: Float,
+    modifier: Modifier = Modifier,
+) {
     Row(
         modifier = Modifier
             .heightIn(min = 50.dp)
@@ -105,10 +164,10 @@ private fun LoadingItem(modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-private fun PreviewLoadingItem() {
+private fun PreviewShimmerLoading() {
     CryptoStatsTheme {
         Surface {
-            LoadingItem()
+            ShimmerLoadingList()
         }
     }
 }

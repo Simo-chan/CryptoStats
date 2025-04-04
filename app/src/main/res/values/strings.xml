@@ -11,4 +11,6 @@
     <string name="favorites">Favorites\n</string>
     <string name="top100">Top 100\n</string>
     <string name="try_again">Try again\n</string>
+    <string name="search">Search\n\n</string>
+    <string name="change_theme">Change theme\n</string>
 </resources>
