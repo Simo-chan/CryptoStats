@@ -8,10 +8,8 @@ import com.example.cryptostats.crypto.domain.CoinRepo
 import com.example.cryptostats.crypto.presentation.coin_details.custom_graph.DataPoint
 import com.example.cryptostats.crypto.presentation.models.CoinUI
 import com.example.cryptostats.crypto.presentation.models.toCoinUI
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.ZonedDateTime

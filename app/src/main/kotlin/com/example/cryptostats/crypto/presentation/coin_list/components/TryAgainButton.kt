@@ -74,7 +74,7 @@ fun TryAgainButton(
 @PreviewLightAndDark
 @Composable
 private fun TryAgainScreenPreview() {
-    CryptoStatsTheme {
+    CryptoStatsTheme(true) {
         Surface {
             TryAgainButton(
                 message = "No internet connection",

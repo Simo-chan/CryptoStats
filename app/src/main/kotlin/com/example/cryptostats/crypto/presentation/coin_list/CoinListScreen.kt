@@ -77,7 +77,9 @@ private fun CoinList(
                     .padding(horizontal = 16.dp)
             )
         }
-        items(state.coins) { coinUI ->
+        items(
+            items = state.coins
+        ) { coinUI ->
             CoinListItem(
                 coinUI = coinUI,
                 onClick = { onAction(CoinListAction.OnCoinClick(coinUI)) },
@@ -118,7 +120,7 @@ private fun FavoriteCoinList(modifier: Modifier = Modifier) {
 @Preview(widthDp = 320, heightDp = 320)
 @Composable
 private fun CoinListScreenPreview() {
-    CryptoStatsTheme {
+    CryptoStatsTheme(true) {
         Surface {
             CoinListScreen(
                 state = CoinListState(

@@ -1,6 +1,5 @@
 package com.example.cryptostats.crypto.presentation.coin_list.components
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -46,7 +45,7 @@ fun FavoriteCoinCard(
         shape = RoundedCornerShape(32.dp),
 
         colors = CardDefaults.cardColors(
-            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             containerColor = MaterialTheme.colorScheme.secondaryContainer
         )
     ) {
@@ -105,7 +104,7 @@ fun FavoriteCoinCard(
 @PreviewLightAndDark
 @Composable
 private fun FavoriteCoinCardPreview(modifier: Modifier = Modifier) {
-    CryptoStatsTheme {
+    CryptoStatsTheme(true) {
         Surface {
             FavoriteCoinCard(
                 coinUI = previewCoin,

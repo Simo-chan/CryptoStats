@@ -69,7 +69,7 @@ fun CoinListItem(
 @PreviewLightAndDark
 @Composable
 private fun CoinListItemPreview() {
-    CryptoStatsTheme {
+    CryptoStatsTheme(true) {
         Surface {
             CoinListItem(
                 coinUI = previewCoin,

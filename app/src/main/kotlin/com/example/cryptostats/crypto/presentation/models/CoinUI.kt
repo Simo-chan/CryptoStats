@@ -1,12 +1,13 @@
 package com.example.cryptostats.crypto.presentation.models
 
-import androidx.annotation.DrawableRes
-import com.example.cryptostats.crypto.domain.Coin
+import androidx.compose.runtime.Immutable
 import com.example.cryptostats.core.presentation.util.getDrawableIdForCoin
+import com.example.cryptostats.crypto.domain.Coin
 import com.example.cryptostats.crypto.presentation.coin_details.custom_graph.DataPoint
 import java.text.NumberFormat
 import java.util.Locale
 
+@Immutable
 data class CoinUI(
     val id: String,
     val rank: Int,
@@ -15,8 +16,8 @@ data class CoinUI(
     val marketCapUsd: DisplayableNumber,
     val priceUsd: DisplayableNumber,
     val changePercent24Hr: DisplayableNumber,
-    @DrawableRes val iconRes: Int,
-    val coinPriceHistory: List<DataPoint> = emptyList()
+    val iconRes: Int,
+    val coinPriceHistory: List<DataPoint> = emptyList(),
 )
 
 data class DisplayableNumber(

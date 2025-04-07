@@ -202,7 +202,7 @@ fun CoinDetailScreen(
 @PreviewLightAndDark
 @Composable
 private fun CoinDetailScreenPreview() {
-    CryptoStatsTheme {
+    CryptoStatsTheme(true) {
         Surface {
             CoinDetailScreen(
                 state = CoinListState(

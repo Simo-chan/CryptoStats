@@ -355,7 +355,7 @@ private fun getSelectedDataPointIndex(
 @Preview(widthDp = 1000)
 @Composable
 private fun LineChartPreview(modifier: Modifier = Modifier) {
-    CryptoStatsTheme {
+    CryptoStatsTheme(true) {
         val coinHistoryMock = remember {
             (1..20).map {
                 CoinPrice(

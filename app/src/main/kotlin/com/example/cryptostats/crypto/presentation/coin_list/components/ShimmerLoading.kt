@@ -165,7 +165,7 @@ private fun LoadingColumnItem(
 @Preview(showBackground = true)
 @Composable
 private fun PreviewShimmerLoading() {
-    CryptoStatsTheme {
+    CryptoStatsTheme(true) {
         Surface {
             ShimmerLoadingList()
         }

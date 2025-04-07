@@ -2,6 +2,7 @@ package com.example.cryptostats.crypto.presentation.coin_list.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -17,13 +18,15 @@ import com.example.cryptostats.R
 @Composable
 fun CustomToolBar(
     scrollBehavior: TopAppBarScrollBehavior,
+    onClick: () -> Unit,
+    darkTheme: Boolean,
     modifier: Modifier = Modifier,
 ) {
     TopAppBar(
         title = {},
         actions = {
             SearchButton()
-            ChangeThemeButton()
+            ChangeThemeButton(darkTheme = darkTheme, onClick = onClick)
         },
         scrollBehavior = scrollBehavior,
     )
@@ -31,7 +34,7 @@ fun CustomToolBar(
 
 @Composable
 private fun SearchButton(modifier: Modifier = Modifier) {
-    IconButton(onClick = { TODO() }) {
+    IconButton(onClick = { }) {
         Icon(
             imageVector = Icons.Default.Search,
             contentDescription = stringResource(R.string.search)
@@ -40,10 +43,14 @@ private fun SearchButton(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun ChangeThemeButton(modifier: Modifier = Modifier) {
-    IconButton(onClick = { TODO() }) {
+private fun ChangeThemeButton(
+    darkTheme: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    IconButton(onClick = onClick) {
         Icon(
-            imageVector = Icons.Default.DarkMode,
+            imageVector = if (darkTheme) Icons.Default.DarkMode else Icons.Default.LightMode,
             contentDescription = stringResource(R.string.change_theme)
         )
     }
