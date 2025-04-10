@@ -1,5 +1,6 @@
-package com.example.cryptostats.crypto.data.networking
+package com.example.cryptostats.crypto.data
 
+import com.example.cryptostats.core.data.data_store.DataStore
 import com.example.cryptostats.core.data.networking.ktor.constructUrl
 import com.example.cryptostats.core.data.networking.ktor.makeCall
 import com.example.cryptostats.core.domain.util.NetworkError
@@ -15,10 +16,14 @@ import com.example.cryptostats.crypto.domain.CoinRepo
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import kotlinx.coroutines.flow.Flow
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-class CoinRepoImpl(private val httpClient: HttpClient) : CoinRepo {
+class CoinRepoImpl(
+    private val httpClient: HttpClient,
+    private val dataStore: DataStore,
+) : CoinRepo {
     override suspend fun getCoins(): Result<List<Coin>, NetworkError> {
         return makeCall<CoinListDto> {
             httpClient.get(
@@ -57,4 +62,9 @@ class CoinRepoImpl(private val httpClient: HttpClient) : CoinRepo {
             response.data.map { it.toCoinPrice() }
         }
     }
+
+    override suspend fun saveCurrentTheme(isDarkTheme: Boolean) =
+        dataStore.saveCurrentTheme(isDarkTheme)
+
+    override fun getCurrentTheme(): Flow<Boolean> = dataStore.currentThemeState
 }
