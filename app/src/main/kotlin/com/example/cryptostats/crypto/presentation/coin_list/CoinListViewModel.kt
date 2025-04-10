@@ -22,6 +22,8 @@ class CoinListViewModel(
     private val _state = MutableStateFlow(CoinListState())
     val state = _state.asStateFlow()
 
+    val themeState = coinRepo.getCurrentTheme()
+
     init {
         getCoins()
     }
@@ -36,6 +38,10 @@ class CoinListViewModel(
                 getCoins()
             }
         }
+    }
+
+    fun saveCurrentTheme(isDarkTheme: Boolean) = viewModelScope.launch {
+        coinRepo.saveCurrentTheme(isDarkTheme)
     }
 
     private fun selectCoin(coinUI: CoinUI) = viewModelScope.launch {
@@ -91,7 +97,7 @@ class CoinListViewModel(
             }
             .onError { error ->
                 _state.update {
-                    it.copy(isLoading = false, isError = true, errorMessage = error )
+                    it.copy(isLoading = false, isError = true, errorMessage = error)
                 }
             }
     }
