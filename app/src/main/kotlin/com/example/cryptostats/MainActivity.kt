@@ -6,9 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.cryptostats.core.navigation.AdaptiveCoinListDetailPane
 import com.example.cryptostats.crypto.presentation.coin_list.CoinListViewModel
@@ -26,7 +28,6 @@ class MainActivity : ComponentActivity() {
 
             Crossfade(targetState = isDarkTheme, animationSpec = tween(1000)) { newTheme ->
                 CryptoStatsTheme(darkTheme = newTheme) {
-                    Scaffold { inner-> }
                     AdaptiveCoinListDetailPane()
                 }
             }

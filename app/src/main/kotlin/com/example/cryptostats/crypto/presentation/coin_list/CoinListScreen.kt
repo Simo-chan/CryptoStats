@@ -27,6 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.cryptostats.R
 import com.example.cryptostats.core.presentation.util.toDisplayableMessage
 import com.example.cryptostats.crypto.presentation.coin_list.components.CoinListItem
+import com.example.cryptostats.crypto.presentation.coin_list.components.CustomSearchBar
 import com.example.cryptostats.crypto.presentation.coin_list.components.CustomToolBar
 import com.example.cryptostats.crypto.presentation.coin_list.components.FavoriteCoinCard
 import com.example.cryptostats.crypto.presentation.coin_list.components.ScrollUpFAB
@@ -50,14 +51,14 @@ fun CoinListScreen(
 
     Scaffold(
         modifier = Modifier
-            .fillMaxSize()
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         floatingActionButton = { ScrollUpFAB(listState) },
         topBar = {
+            CustomSearchBar(modifier = Modifier)
             CustomToolBar(
                 scrollBehavior = scrollBehavior,
                 darkTheme = isDarkTheme,
-                onClick = { onAction(CoinListAction.OnSetNewTheme) }
+                onThemeChange = { onAction(CoinListAction.OnSetNewTheme) }
             )
         }
     ) { innerPadding ->
@@ -82,12 +83,19 @@ private fun CoinListScreenContent(
         state.isLoading -> ShimmerLoadingList()
         state.isError -> TryAgainButton(
             message =
+                //Can improve it buy nullifying error message
                 state.errorMessage?.toDisplayableMessage(context)
                     ?: stringResource(R.string.error_unknown),
             onAction = onAction
         )
 
-        else -> CoinList(state = state, listState = listState, onAction = onAction)
+        else ->
+            CoinList(
+                state = state,
+                listState = listState,
+                onAction = onAction,
+                modifier = modifier
+            )
     }
 }
 
@@ -98,6 +106,7 @@ private fun CoinList(
     listState: LazyListState,
     onAction: (CoinListAction) -> Unit,
 ) {
+
     LazyColumn(
         state = listState,
         modifier = modifier
@@ -107,9 +116,7 @@ private fun CoinList(
             Text(
                 text = stringResource(R.string.favorites),
                 style = MaterialTheme.typography.headlineLarge,
-                modifier = Modifier
-                    .padding(top = 45.dp)
-                    .padding(horizontal = 16.dp)
+                modifier = Modifier.padding(horizontal = 16.dp)
             )
         }
         item { FavoriteCoinList() }
