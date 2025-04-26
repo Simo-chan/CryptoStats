@@ -83,7 +83,7 @@ private fun CoinListScreenContent(
         state.isLoading -> ShimmerLoadingList()
         state.isError -> TryAgainButton(
             message =
-                //Can improve it buy nullifying error message
+                //Can improve it by nullifying error message
                 state.errorMessage?.toDisplayableMessage(context)
                     ?: stringResource(R.string.error_unknown),
             onAction = onAction
