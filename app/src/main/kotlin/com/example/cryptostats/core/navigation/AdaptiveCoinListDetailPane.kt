@@ -33,10 +33,8 @@ fun AdaptiveCoinListDetailPane(
         listPane = {
             AnimatedPane {
                 CoinListScreen(
-                    state = state,
                     onAction = { action ->
                         scope.launch {
-                            viewModel.onAction(action)
                             when (action) {
                                 is CoinListAction.OnCoinClick -> {
                                     navigator.navigateTo(
@@ -44,14 +42,9 @@ fun AdaptiveCoinListDetailPane(
                                     )
                                 }
 
-                                is CoinListAction.OnRefresh -> {
-                                    viewModel.onAction(CoinListAction.OnRefresh)
-                                }
-
-                                CoinListAction.OnSetNewTheme -> {
-                                    viewModel.onAction(CoinListAction.OnSetNewTheme)
-                                }
+                                else -> Unit
                             }
+                            viewModel.onAction(action)
                         }
                     }
                 )

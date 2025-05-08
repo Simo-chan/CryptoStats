@@ -24,11 +24,27 @@ class CoinRepoImpl(
     private val httpClient: HttpClient,
     private val dataStore: DataStore,
 ) : CoinRepo {
+
     override suspend fun getCoins(): Result<List<Coin>, NetworkError> {
         return makeCall<CoinListDto> {
             httpClient.get(
-                urlString = constructUrl("/assets")
+                urlString = constructUrl(ALL_COINS_ENDPOINT)
             )
+        }.map { response ->
+            response.data
+                .filter { it.changePercent24Hr != null && it.priceUsd != null && it.marketCapUsd != null }
+                .map { it.toCoin() }
+        }
+    }
+
+    override suspend fun searchCoins(query: String): Result<List<Coin>, NetworkError> {
+        return makeCall<CoinListDto> {
+            httpClient.get(
+                urlString = constructUrl(ALL_COINS_ENDPOINT)
+            ) {
+                parameter("search", query)
+                parameter("limit", SEARCH_RESULT_LIMIT)
+            }
         }.map { response ->
             response.data
                 .filter { it.changePercent24Hr != null && it.priceUsd != null && it.marketCapUsd != null }
@@ -42,17 +58,17 @@ class CoinRepoImpl(
         endTime: ZonedDateTime,
     ): Result<List<CoinPrice>, NetworkError> {
         val startMillis = startTime
-            .withZoneSameInstant(ZoneId.of("UTC"))
+            .withZoneSameInstant(ZoneId.of(TIME_ZONE))
             .toInstant()
             .toEpochMilli()
         val endMillis = endTime
-            .withZoneSameInstant(ZoneId.of("UTC"))
+            .withZoneSameInstant(ZoneId.of(TIME_ZONE))
             .toInstant()
             .toEpochMilli()
 
         return makeCall<CoinPriceListDto> {
             httpClient.get(
-                urlString = constructUrl("/assets/$coinId/history")
+                urlString = constructUrl("$ALL_COINS_ENDPOINT/$coinId/$PRICE_HISTORY_ENDPOINT")
             ) {
                 parameter("interval", "h6")
                 parameter("start", startMillis)
@@ -67,4 +83,11 @@ class CoinRepoImpl(
         dataStore.saveCurrentTheme(isDarkTheme)
 
     override fun getCurrentTheme(): Flow<Boolean> = dataStore.currentTheme
+
+    companion object {
+        private const val ALL_COINS_ENDPOINT = "/assets"
+        private const val TIME_ZONE = "UTC"
+        private const val PRICE_HISTORY_ENDPOINT = "/history"
+        private const val SEARCH_RESULT_LIMIT = 6
+    }
 }

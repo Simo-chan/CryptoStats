@@ -8,7 +8,10 @@ import com.example.cryptostats.crypto.presentation.models.CoinUI
 data class CoinListState(
     val isLoading: Boolean = false,
     val coins: List<CoinUI> = emptyList(),
+    val searchResults: List<CoinUI> = emptyList(),
+    val searchQuery: String = "",
+    val isSearching: Boolean = false,
+    val searchError: NetworkError? = null,
     val selectedCoin: CoinUI? = null,
-    val isError: Boolean = false,
-    val errorMessage: NetworkError? = null
+    val errorMessage: NetworkError? = null,
 )
