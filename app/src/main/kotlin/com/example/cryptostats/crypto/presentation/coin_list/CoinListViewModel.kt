@@ -8,10 +8,17 @@ import com.example.cryptostats.crypto.domain.CoinRepo
 import com.example.cryptostats.crypto.presentation.coin_details.custom_graph.DataPoint
 import com.example.cryptostats.crypto.presentation.models.CoinUI
 import com.example.cryptostats.crypto.presentation.models.toCoinUI
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.ZonedDateTime
@@ -21,21 +28,29 @@ class CoinListViewModel(
     private val coinRepo: CoinRepo,
 ) : ViewModel() {
 
+    private var searchJob: Job? = null
+
     private val _state = MutableStateFlow(CoinListState())
     val state = _state.asStateFlow()
 
+    //Probably need to move this out to separate viewModel
     private val _themState = MutableStateFlow<Boolean>(true)
     val themeState: StateFlow<Boolean> = _themState
 
     init {
         getCurrentTheme()
         getCoins()
+        observeSearchQuery()
     }
 
     fun onAction(action: CoinListAction) {
         when (action) {
             is CoinListAction.OnCoinClick -> {
                 selectCoin(action.coinUI)
+            }
+
+            is CoinListAction.OnSearchQueryChange -> {
+                _state.update { it.copy(searchQuery = action.query) }
             }
 
             is CoinListAction.OnRefresh -> {
@@ -59,7 +74,7 @@ class CoinListViewModel(
     }
 
     private fun selectCoin(coinUI: CoinUI) = viewModelScope.launch {
-        _state.update { it.copy(selectedCoin = coinUI, isError = false) }
+        _state.update { it.copy(selectedCoin = coinUI, errorMessage = null) }
         coinRepo
             .getCoinHistory(
                 coinUI.id,
@@ -87,7 +102,7 @@ class CoinListViewModel(
                     )
                 }
             }
-            .onError { error -> _state.update { it.copy(isError = true, errorMessage = error) } }
+            .onError { error -> _state.update { it.copy(errorMessage = error) } }
     }
 
 
@@ -95,7 +110,7 @@ class CoinListViewModel(
         _state.update {
             it.copy(
                 isLoading = true,
-                isError = false
+                errorMessage = null
             )
         }
 
@@ -111,7 +126,51 @@ class CoinListViewModel(
             }
             .onError { error ->
                 _state.update {
-                    it.copy(isLoading = false, isError = true, errorMessage = error)
+                    it.copy(isLoading = false, errorMessage = error)
+                }
+            }
+    }
+
+    @OptIn(FlowPreview::class)
+    private fun observeSearchQuery() {
+        state
+            .map { it.searchQuery }
+            .distinctUntilChanged()
+            .debounce(600L)
+            .onEach { query ->
+                when {
+                    query.isBlank() ->
+                        _state.update { it.copy(searchError = null) }
+
+                    query.length >= 2 -> {
+                        searchJob?.cancel()
+                        searchJob = searchCoins(query)
+                    }
+                }
+            }.launchIn(viewModelScope)
+    }
+
+    private fun searchCoins(query: String) = viewModelScope.launch {
+        _state.update {
+            it.copy(
+                isSearching = true,
+                searchError = null
+            )
+        }
+
+        coinRepo
+            .searchCoins(query)
+            .onSuccess { coins ->
+                _state.update {
+                    it.copy(
+                        isSearching = false,
+                        searchResults = coins.map { it.toCoinUI() }
+                    )
+                }
+            }
+            .onError { error ->
+                _state.update {
+                    it.copy(isSearching = false, searchError = error)
                 }
             }
     }

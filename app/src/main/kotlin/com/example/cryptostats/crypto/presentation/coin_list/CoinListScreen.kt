@@ -16,6 +16,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -27,9 +30,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.cryptostats.R
 import com.example.cryptostats.core.presentation.util.toDisplayableMessage
 import com.example.cryptostats.crypto.presentation.coin_list.components.CoinListItem
-import com.example.cryptostats.crypto.presentation.coin_list.components.CustomSearchBar
-import com.example.cryptostats.crypto.presentation.coin_list.components.CustomToolBar
+import com.example.cryptostats.crypto.presentation.coin_list.components.CoinSearchBar
 import com.example.cryptostats.crypto.presentation.coin_list.components.FavoriteCoinCard
+import com.example.cryptostats.crypto.presentation.coin_list.components.MainToolBar
 import com.example.cryptostats.crypto.presentation.coin_list.components.ScrollUpFAB
 import com.example.cryptostats.crypto.presentation.coin_list.components.ShimmerLoadingList
 import com.example.cryptostats.crypto.presentation.coin_list.components.TryAgainButton
@@ -37,65 +40,74 @@ import com.example.cryptostats.crypto.presentation.coin_list.components.previewC
 import com.example.cryptostats.ui.theme.CryptoStatsTheme
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CoinListScreen(
     modifier: Modifier = Modifier,
-    state: CoinListState,
     onAction: (CoinListAction) -> Unit,
     viewModel: CoinListViewModel = koinViewModel(),
 ) {
+    val isDarkTheme by viewModel.themeState.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    CoinListScreenContent(
+        state = state,
+        isDarkTheme = isDarkTheme,
+        onAction = onAction
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun CoinListScreenContent(
+    state: CoinListState,
+    isDarkTheme: Boolean,
+    onAction: (CoinListAction) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val context = LocalContext.current
+
     val listState = rememberLazyListState()
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
-    val isDarkTheme by viewModel.themeState.collectAsStateWithLifecycle()
+    var isSearchBarExpanded by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
         modifier = Modifier
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         floatingActionButton = { ScrollUpFAB(listState) },
         topBar = {
-            CustomSearchBar(modifier = Modifier)
-            CustomToolBar(
-                scrollBehavior = scrollBehavior,
-                darkTheme = isDarkTheme,
-                onThemeChange = { onAction(CoinListAction.OnSetNewTheme) }
-            )
+            if (isSearchBarExpanded) {
+                CoinSearchBar(
+                    onHideClick = { isSearchBarExpanded = false },
+                    state = state,
+                    onAction = onAction
+                )
+            } else {
+                MainToolBar(
+                    scrollBehavior = scrollBehavior,
+                    darkTheme = isDarkTheme,
+                    onThemeChange = { onAction(CoinListAction.OnSetNewTheme) },
+                    onSearchButtonClick = { isSearchBarExpanded = true }
+                )
+            }
         }
     ) { innerPadding ->
-        CoinListScreenContent(
-            state = state,
-            listState = listState,
-            onAction = onAction,
-            modifier = Modifier.padding(innerPadding)
-        )
-    }
-}
+        when {
+            state.isLoading -> ShimmerLoadingList(modifier = modifier.padding(innerPadding))
 
-@Composable
-private fun CoinListScreenContent(
-    state: CoinListState,
-    listState: LazyListState,
-    onAction: (CoinListAction) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val context = LocalContext.current
-    when {
-        state.isLoading -> ShimmerLoadingList()
-        state.isError -> TryAgainButton(
-            message =
-                //Can improve it by nullifying error message
-                state.errorMessage?.toDisplayableMessage(context)
-                    ?: stringResource(R.string.error_unknown),
-            onAction = onAction
-        )
-
-        else ->
-            CoinList(
-                state = state,
-                listState = listState,
+            state.errorMessage != null -> TryAgainButton(
+                message = state.errorMessage.toDisplayableMessage(context),
                 onAction = onAction,
-                modifier = modifier
+                modifier = modifier.padding(innerPadding)
             )
+
+            else ->
+                CoinList(
+                    state = state,
+                    listState = listState,
+                    onAction = onAction,
+                    modifier = modifier.padding(innerPadding)
+                )
+        }
     }
 }
 
@@ -106,7 +118,6 @@ private fun CoinList(
     listState: LazyListState,
     onAction: (CoinListAction) -> Unit,
 ) {
-
     LazyColumn(
         state = listState,
         modifier = modifier
@@ -181,7 +192,7 @@ private fun CoinListScreenPreview() {
                     }
                 ),
                 onAction = {},
-                listState = rememberLazyListState()
+                isDarkTheme = true
             )
         }
     }

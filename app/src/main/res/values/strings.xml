@@ -15,4 +15,5 @@
     <string name="change_theme">Change theme\n</string>
     <string name="search_hint">Search coins</string>
     <string name="close_hint">Clear search</string>
+    <string name="close_search">Close search bar\n</string>
 </resources>
