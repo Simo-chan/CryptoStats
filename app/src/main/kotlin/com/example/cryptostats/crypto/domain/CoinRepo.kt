@@ -13,7 +13,4 @@ interface CoinRepo {
         startTime: ZonedDateTime,
         endTime: ZonedDateTime,
     ): Result<List<CoinPrice>, NetworkError>
-
-    suspend fun saveCurrentTheme(isDarkTheme: Boolean)
-    fun getCurrentTheme(): Flow<Boolean>
 }

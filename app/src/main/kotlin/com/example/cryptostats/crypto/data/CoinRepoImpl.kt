@@ -1,6 +1,6 @@
 package com.example.cryptostats.crypto.data
 
-import com.example.cryptostats.core.data.data_store.DataStore
+import com.example.cryptostats.core.data.data_store.DataStoreImpl
 import com.example.cryptostats.core.data.networking.ktor.constructUrl
 import com.example.cryptostats.core.data.networking.ktor.makeCall
 import com.example.cryptostats.core.domain.util.NetworkError
@@ -22,7 +22,7 @@ import java.time.ZonedDateTime
 
 class CoinRepoImpl(
     private val httpClient: HttpClient,
-    private val dataStore: DataStore,
+    private val dataStore: DataStoreImpl,
 ) : CoinRepo {
 
     override suspend fun getCoins(): Result<List<Coin>, NetworkError> {
@@ -79,7 +79,7 @@ class CoinRepoImpl(
         }
     }
 
-    override suspend fun saveCurrentTheme(isDarkTheme: Boolean) =
+    override suspend fun setNewTheme(isDarkTheme: Boolean) =
         dataStore.saveCurrentTheme(isDarkTheme)
 
     override fun getCurrentTheme(): Flow<Boolean> = dataStore.currentTheme

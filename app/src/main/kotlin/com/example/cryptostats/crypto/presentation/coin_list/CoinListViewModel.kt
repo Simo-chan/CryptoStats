@@ -11,9 +11,7 @@ import com.example.cryptostats.crypto.presentation.models.toCoinUI
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
@@ -33,12 +31,7 @@ class CoinListViewModel(
     private val _state = MutableStateFlow(CoinListState())
     val state = _state.asStateFlow()
 
-    //Probably need to move this out to separate viewModel
-    private val _themState = MutableStateFlow<Boolean>(true)
-    val themeState: StateFlow<Boolean> = _themState
-
     init {
-        getCurrentTheme()
         getCoins()
         observeSearchQuery()
     }
@@ -56,21 +49,7 @@ class CoinListViewModel(
             is CoinListAction.OnRefresh -> {
                 getCoins()
             }
-
-            is CoinListAction.OnSetNewTheme -> {
-                setNewTheme()
-            }
         }
-    }
-
-    private fun getCurrentTheme() = viewModelScope.launch {
-        coinRepo.getCurrentTheme().collectLatest { theme ->
-            _themState.value = theme
-        }
-    }
-
-    private fun setNewTheme() = viewModelScope.launch {
-        coinRepo.saveCurrentTheme(isDarkTheme = !themeState.value)
     }
 
     private fun selectCoin(coinUI: CoinUI) = viewModelScope.launch {
