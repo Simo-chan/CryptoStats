@@ -6,5 +6,4 @@ sealed interface CoinListAction {
     data class OnCoinClick(val coinUI: CoinUI) : CoinListAction
     data class OnSearchQueryChange(val query: String): CoinListAction
     object OnRefresh : CoinListAction
-    object OnSetNewTheme: CoinListAction
 }

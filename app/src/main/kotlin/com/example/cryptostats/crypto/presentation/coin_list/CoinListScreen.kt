@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.cryptostats.R
+import com.example.cryptostats.core.presentation.ThemeViewModel
 import com.example.cryptostats.core.presentation.util.toDisplayableMessage
 import com.example.cryptostats.crypto.presentation.coin_list.components.CoinListItem
 import com.example.cryptostats.crypto.presentation.coin_list.components.CoinSearchBar
@@ -44,14 +45,15 @@ import org.koin.androidx.compose.koinViewModel
 fun CoinListScreen(
     modifier: Modifier = Modifier,
     onAction: (CoinListAction) -> Unit,
-    viewModel: CoinListViewModel = koinViewModel(),
+    coinListViewModel: CoinListViewModel = koinViewModel(),
+    themeViewModel: ThemeViewModel = koinViewModel(),
 ) {
-    val isDarkTheme by viewModel.themeState.collectAsStateWithLifecycle()
-    val state by viewModel.state.collectAsStateWithLifecycle()
+    val themeState by themeViewModel.themeState.collectAsStateWithLifecycle()
+    val state by coinListViewModel.state.collectAsStateWithLifecycle()
 
     CoinListScreenContent(
         state = state,
-        isDarkTheme = isDarkTheme,
+        isDarkTheme = themeState.isDarkTheme,
         onAction = onAction
     )
 }

@@ -77,4 +77,5 @@ dependencies {
 
     implementation(libs.lottie.compose)
     implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.core.splashscreen)
 }
