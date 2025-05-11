@@ -6,11 +6,11 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
-import com.example.cryptostats.core.domain.DataStoreRepo
+import com.example.cryptostats.core.domain.UserPreferencesRepo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class DataStoreImpl(val context: Context) : DataStoreRepo {
+class UserPreferencesRepoImpl(private val context: Context) : UserPreferencesRepo {
     val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = DATASTORE_NAME)
 
     override suspend fun setNewTheme(isDarkTheme: Boolean) {

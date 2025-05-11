@@ -41,7 +41,6 @@ fun AdaptiveCoinListDetailPane(
                                         pane = ListDetailPaneScaffoldRole.Detail
                                     )
                                 }
-
                                 else -> Unit
                             }
                             viewModel.onAction(action)

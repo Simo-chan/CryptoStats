@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.cryptostats.R
+import com.example.cryptostats.core.presentation.ThemeAction
 import com.example.cryptostats.core.presentation.ThemeViewModel
 import com.example.cryptostats.core.presentation.util.toDisplayableMessage
 import com.example.cryptostats.crypto.presentation.coin_list.components.CoinListItem
@@ -54,7 +55,8 @@ fun CoinListScreen(
     CoinListScreenContent(
         state = state,
         isDarkTheme = themeState.isDarkTheme,
-        onAction = onAction
+        onAction = onAction,
+        onThemeChange = themeViewModel::onAction
     )
 }
 
@@ -62,8 +64,9 @@ fun CoinListScreen(
 @Composable
 private fun CoinListScreenContent(
     state: CoinListState,
-    isDarkTheme: Boolean,
     onAction: (CoinListAction) -> Unit,
+    onThemeChange: (ThemeAction) -> Unit,
+    isDarkTheme: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -87,7 +90,7 @@ private fun CoinListScreenContent(
                 MainToolBar(
                     scrollBehavior = scrollBehavior,
                     darkTheme = isDarkTheme,
-                    onThemeChange = { onAction(CoinListAction.OnSetNewTheme) },
+                    onThemeChange = onThemeChange,
                     onSearchButtonClick = { isSearchBarExpanded = true }
                 )
             }
@@ -194,6 +197,7 @@ private fun CoinListScreenPreview() {
                     }
                 ),
                 onAction = {},
+                onThemeChange = {},
                 isDarkTheme = true
             )
         }
