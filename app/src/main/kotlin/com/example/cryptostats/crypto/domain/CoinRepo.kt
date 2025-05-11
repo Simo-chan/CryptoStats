@@ -2,7 +2,6 @@ package com.example.cryptostats.crypto.domain
 
 import com.example.cryptostats.core.domain.util.NetworkError
 import com.example.cryptostats.core.domain.util.Result
-import kotlinx.coroutines.flow.Flow
 import java.time.ZonedDateTime
 
 interface CoinRepo {
@@ -13,4 +12,8 @@ interface CoinRepo {
         startTime: ZonedDateTime,
         endTime: ZonedDateTime,
     ): Result<List<CoinPrice>, NetworkError>
+
+    suspend fun saveFavoriteCoin(id: String)
+    suspend fun isCoinFavorite(id: String): Boolean
+    suspend fun deleteFavoriteCoin(id: String)
 }

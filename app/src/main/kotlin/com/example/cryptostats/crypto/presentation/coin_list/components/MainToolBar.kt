@@ -21,13 +21,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.stringResource
 import com.example.cryptostats.R
+import com.example.cryptostats.core.presentation.ThemeAction
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainToolBar(
     scrollBehavior: TopAppBarScrollBehavior,
-    onThemeChange: () -> Unit,
+    onThemeChange: (ThemeAction) -> Unit,
     onSearchButtonClick: () -> Unit,
     darkTheme: Boolean,
     modifier: Modifier = Modifier,
@@ -36,7 +37,9 @@ fun MainToolBar(
         title = {},
         actions = {
             SearchButton(onClick = onSearchButtonClick)
-            ChangeThemeButton(darkTheme = darkTheme, onClick = onThemeChange)
+            ChangeThemeButton(
+                darkTheme = darkTheme,
+                onClick = { onThemeChange(ThemeAction.OnSetNewTheme) })
         },
         scrollBehavior = scrollBehavior,
     )
