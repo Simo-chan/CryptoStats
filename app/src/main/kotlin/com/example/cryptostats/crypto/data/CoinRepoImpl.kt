@@ -83,7 +83,7 @@ class CoinRepoImpl(
 
     override suspend fun isCoinFavorite(id: String): Boolean = coinDao.isCoinFavorite(id)
 
-    override suspend fun deleteFavoriteCoin(id: String) = coinDao.deleteFavoriteCoin(id)
+    override suspend fun deleteFavoriteCoin(id: String) = coinDao.deleteFavoriteCoin(id  )
 
     companion object {
         private const val ALL_COINS_ENDPOINT = "/assets"
