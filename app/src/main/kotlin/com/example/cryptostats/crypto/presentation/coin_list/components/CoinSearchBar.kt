@@ -2,6 +2,7 @@ package com.example.cryptostats.crypto.presentation.coin_list.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -75,11 +76,17 @@ fun CoinSearchBar(
         onExpandedChange = {}
     ) {
         when {
-            state.isSearching -> Box(contentAlignment = Alignment.Center) {
+            state.isSearching -> Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
                 CircularProgressIndicator()
             }
 
-            state.searchError != null -> Box(contentAlignment = Alignment.Center) {
+            state.searchError != null -> Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
                 Text(text = state.searchError.toDisplayableMessage(context))
             }
 

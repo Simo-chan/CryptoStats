@@ -115,13 +115,13 @@ class CoinListViewModel(
         state
             .map { it.searchQuery }
             .distinctUntilChanged()
-            .debounce(600L)
+            .debounce(500L)
             .onEach { query ->
                 when {
                     query.isBlank() ->
-                        _state.update { it.copy(searchError = null) }
+                        _state.update { it.copy(searchError = null, searchResults = emptyList()) }
 
-                    query.length >= 2 -> {
+                    query.isNotEmpty() -> {
                         searchJob?.cancel()
                         searchJob = searchCoins(query)
                     }
