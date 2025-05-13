@@ -27,6 +27,7 @@ class CoinListViewModel(
 ) : ViewModel() {
 
     private var searchJob: Job? = null
+    private var observeFavoriteCoins: Job? = null
 
     private val _state = MutableStateFlow(CoinListState())
     val state = _state.asStateFlow()
@@ -109,6 +110,20 @@ class CoinListViewModel(
                 }
             }
     }
+
+    private fun observeFavoriteCoins() {
+        val coins = state.value.coins
+        observeFavoriteCoins?.cancel()
+        observeFavoriteCoins = coinRepo
+            .getFavoriteCoins()
+            .onEach { favoriteCoin ->  }
+            .launchIn(viewModelScope)
+    }
+
+    /*private fun getFavoriteCoins() = viewModelScope.launch {
+        val coins = state.value.coins.filter { coin -> coinRepo.isCoinFavorite(coin.id) }
+        coins.onEach { favoriteCoins -> favoriteCoins }
+    }*/
 
     @OptIn(FlowPreview::class)
     private fun observeSearchQuery() {

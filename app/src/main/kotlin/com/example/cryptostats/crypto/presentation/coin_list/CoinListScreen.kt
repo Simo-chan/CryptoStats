@@ -33,8 +33,7 @@ import com.example.cryptostats.core.presentation.ThemeViewModel
 import com.example.cryptostats.core.presentation.util.toDisplayableMessage
 import com.example.cryptostats.crypto.presentation.coin_list.components.CoinListItem
 import com.example.cryptostats.crypto.presentation.coin_list.components.CoinSearchBar
-import com.example.cryptostats.crypto.presentation.coin_list.components.FavoriteCoinCard
-import com.example.cryptostats.crypto.presentation.coin_list.components.MainToolBar
+import com.example.cryptostats.crypto.presentation.coin_list.components.CoinListToolBar
 import com.example.cryptostats.crypto.presentation.coin_list.components.ScrollUpFAB
 import com.example.cryptostats.crypto.presentation.coin_list.components.ShimmerLoadingList
 import com.example.cryptostats.crypto.presentation.coin_list.components.TryAgainButton
@@ -87,7 +86,7 @@ private fun CoinListScreenContent(
                     onAction = onAction
                 )
             } else {
-                MainToolBar(
+                CoinListToolBar(
                     scrollBehavior = scrollBehavior,
                     darkTheme = isDarkTheme,
                     onThemeChange = onThemeChange,
@@ -135,7 +134,7 @@ private fun CoinList(
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
         }
-        item { FavoriteCoinList() }
+        item { FavoriteCoinList(state = state, onAction = onAction) }
         item {
             Text(
                 text = stringResource(R.string.top100),
@@ -158,27 +157,19 @@ private fun CoinList(
 }
 
 @Composable
-private fun FavoriteCoinList(modifier: Modifier = Modifier) {
+private fun FavoriteCoinList(
+    state: CoinListState,
+    onAction: (CoinListAction) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     LazyRow(contentPadding = PaddingValues(horizontal = 8.dp)) {
-        item {
-            FavoriteCoinCard(
-                coinUI = previewCoin,
-                onClick = {},
-                modifier = Modifier.padding(horizontal = 8.dp)
-            )
-        }
-        item {
-            FavoriteCoinCard(
-                coinUI = previewCoin,
-                onClick = {},
-                modifier = Modifier.padding(horizontal = 8.dp)
-            )
-        }
-        item {
-            FavoriteCoinCard(
-                coinUI = previewCoin,
-                onClick = {},
-                modifier = Modifier.padding(horizontal = 8.dp)
+        items(
+            items = state.favoriteCoins
+        ) { coinUI ->
+            CoinListItem(
+                coinUI = coinUI,
+                onClick = { onAction(CoinListAction.OnCoinClick(coinUI)) },
+                modifier = Modifier.padding(16.dp)
             )
         }
     }

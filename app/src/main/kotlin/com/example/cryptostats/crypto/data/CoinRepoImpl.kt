@@ -17,6 +17,8 @@ import com.example.cryptostats.crypto.domain.CoinRepo
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
@@ -81,9 +83,12 @@ class CoinRepoImpl(
 
     override suspend fun saveFavoriteCoin(id: String) = coinDao.saveFavoriteCoin(FavoriteCoin(id))
 
-    override suspend fun isCoinFavorite(id: String): Boolean = coinDao.isCoinFavorite(id)
+    override fun getFavoriteCoins(): Flow<List<String>> =
+        coinDao.getFavoriteCoins().map { coinEntities -> coinEntities.map { it.toString() } }
 
-    override suspend fun deleteFavoriteCoin(id: String) = coinDao.deleteFavoriteCoin(id  )
+    override fun isCoinFavorite(id: String): Flow<Boolean> = coinDao.isCoinFavorite(id)
+
+    override suspend fun deleteFavoriteCoin(id: String) = coinDao.deleteFavoriteCoin(id)
 
     companion object {
         private const val ALL_COINS_ENDPOINT = "/assets"
