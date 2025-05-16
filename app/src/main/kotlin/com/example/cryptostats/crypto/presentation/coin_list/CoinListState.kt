@@ -2,7 +2,6 @@ package com.example.cryptostats.crypto.presentation.coin_list
 
 import androidx.compose.runtime.Immutable
 import com.example.cryptostats.core.domain.util.NetworkError
-import com.example.cryptostats.crypto.domain.Coin
 import com.example.cryptostats.crypto.presentation.models.CoinUI
 
 @Immutable

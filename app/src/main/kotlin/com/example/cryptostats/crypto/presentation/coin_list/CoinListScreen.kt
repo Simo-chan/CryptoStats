@@ -127,20 +127,21 @@ private fun CoinList(
         modifier = modifier
             .fillMaxSize()
     ) {
-        item {
-            Text(
-                text = stringResource(R.string.favorites),
-                style = MaterialTheme.typography.headlineLarge,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
+        if (state.favoriteCoins.isNotEmpty()) {
+            item {
+                Text(
+                    text = stringResource(R.string.favorites),
+                    style = MaterialTheme.typography.headlineLarge,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+            }
+            item { FavoriteCoinList(state = state, onAction = onAction) }
         }
-        item { FavoriteCoinList(state = state, onAction = onAction) }
         item {
             Text(
                 text = stringResource(R.string.top100),
                 style = MaterialTheme.typography.headlineLarge,
                 modifier = Modifier
-                    .padding(top = 45.dp)
                     .padding(horizontal = 16.dp)
             )
         }

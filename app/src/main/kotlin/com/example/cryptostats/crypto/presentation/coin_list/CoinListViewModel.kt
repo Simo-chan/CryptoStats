@@ -27,13 +27,14 @@ class CoinListViewModel(
 ) : ViewModel() {
 
     private var searchJob: Job? = null
-    private var observeFavoriteCoins: Job? = null
+    private var observeFavoriteCoinsJob: Job? = null
 
     private val _state = MutableStateFlow(CoinListState())
     val state = _state.asStateFlow()
 
     init {
         getCoins()
+        observeFavoriteCoins()
         observeSearchQuery()
     }
 
@@ -111,19 +112,21 @@ class CoinListViewModel(
             }
     }
 
+    //TODO() if it works then need to make it more graceful
     private fun observeFavoriteCoins() {
-        val coins = state.value.coins
-        observeFavoriteCoins?.cancel()
-        observeFavoriteCoins = coinRepo
+        observeFavoriteCoinsJob?.cancel()
+        observeFavoriteCoinsJob = coinRepo
             .getFavoriteCoins()
-            .onEach { favoriteCoin ->  }
+            .onEach { favoriteCoinIds ->
+                favoriteCoinIds.forEach { favoriteCoin ->
+                    val coins = state.value.coins.filter { coin ->
+                        coin.id.contains(favoriteCoin)
+                    }
+                    _state.update { it.copy(favoriteCoins = coins) }
+                }
+            }
             .launchIn(viewModelScope)
     }
-
-    /*private fun getFavoriteCoins() = viewModelScope.launch {
-        val coins = state.value.coins.filter { coin -> coinRepo.isCoinFavorite(coin.id) }
-        coins.onEach { favoriteCoins -> favoriteCoins }
-    }*/
 
     @OptIn(FlowPreview::class)
     private fun observeSearchQuery() {

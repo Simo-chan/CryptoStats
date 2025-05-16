@@ -11,6 +11,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.example.cryptostats.R
 
@@ -25,10 +26,12 @@ fun CoinDetailToolBar(
     TopAppBar(
         title = {},
         navigationIcon = {
-            Icon(
-                imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
-                contentDescription = stringResource(R.string.navigate_back)
-            )
+            IconButton(onClick = {}) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
+                    contentDescription = stringResource(R.string.navigate_back)
+                )
+            }
         },
         actions = { MarkAsFavoriteButton(onClick = onFavoriteClick, isFavorite = isFavorite) },
         scrollBehavior = scrollBehavior
@@ -43,7 +46,8 @@ private fun MarkAsFavoriteButton(
     IconButton(onClick = onClick) {
         Icon(
             imageVector = if (isFavorite) Icons.Filled.Star else Icons.Outlined.Star,
-            contentDescription = stringResource(R.string.mark_fav)
+            contentDescription = stringResource(R.string.mark_fav),
+            tint = if (isFavorite) Color.Yellow else Color.Unspecified
         )
     }
 }
