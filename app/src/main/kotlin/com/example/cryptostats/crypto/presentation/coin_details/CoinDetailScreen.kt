@@ -58,10 +58,12 @@ import com.example.cryptostats.ui.theme.CryptoStatsTheme
 fun CoinDetailScreen(
     selectedCoin: CoinListState,
     state: CoinDetailState,
+    action: CoinDetailAction,
     modifier: Modifier = Modifier,
 ) {
     var showHelperLines by remember { mutableStateOf(true) }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val coin = selectedCoin.selectedCoin
 
     Scaffold(
         topBar = {

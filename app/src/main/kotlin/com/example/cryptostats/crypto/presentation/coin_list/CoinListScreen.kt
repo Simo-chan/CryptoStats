@@ -16,9 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -32,7 +29,6 @@ import com.example.cryptostats.core.presentation.ThemeAction
 import com.example.cryptostats.core.presentation.ThemeViewModel
 import com.example.cryptostats.core.presentation.util.toDisplayableMessage
 import com.example.cryptostats.crypto.presentation.coin_list.components.CoinListItem
-import com.example.cryptostats.crypto.presentation.coin_list.components.CoinSearchBar
 import com.example.cryptostats.crypto.presentation.coin_list.components.CoinListToolBar
 import com.example.cryptostats.crypto.presentation.coin_list.components.ScrollUpFAB
 import com.example.cryptostats.crypto.presentation.coin_list.components.ShimmerLoadingList
@@ -72,27 +68,18 @@ private fun CoinListScreenContent(
 
     val listState = rememberLazyListState()
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
-    var isSearchBarExpanded by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
         modifier = Modifier
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         floatingActionButton = { ScrollUpFAB(listState) },
         topBar = {
-            if (isSearchBarExpanded) {
-                CoinSearchBar(
-                    onHideClick = { isSearchBarExpanded = false },
-                    state = state,
-                    onAction = onAction
-                )
-            } else {
-                CoinListToolBar(
-                    scrollBehavior = scrollBehavior,
-                    darkTheme = isDarkTheme,
-                    onThemeChange = onThemeChange,
-                    onSearchButtonClick = { isSearchBarExpanded = true }
-                )
-            }
+            CoinListToolBar(
+                scrollBehavior = scrollBehavior,
+                darkTheme = isDarkTheme,
+                onThemeChange = onThemeChange,
+                onSearchButtonClick = { onAction(CoinListAction.OnSearchButtonClick) }
+            )
         }
     ) { innerPadding ->
         when {
