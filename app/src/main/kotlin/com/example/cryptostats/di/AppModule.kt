@@ -8,6 +8,7 @@ import com.example.cryptostats.core.presentation.ThemeViewModel
 import com.example.cryptostats.crypto.data.CoinRepoImpl
 import com.example.cryptostats.crypto.data.local.CoinDB
 import com.example.cryptostats.crypto.domain.CoinRepo
+import com.example.cryptostats.crypto.presentation.coin_details.CoinDetailViewModel
 import com.example.cryptostats.crypto.presentation.coin_list.CoinListViewModel
 import io.ktor.client.engine.cio.CIO
 import org.koin.android.ext.koin.androidContext
@@ -25,5 +26,6 @@ val appModule = module {
     singleOf(::CoinRepoImpl).bind<CoinRepo>()
 
     viewModelOf(::CoinListViewModel)
+    viewModelOf(::CoinDetailViewModel)
     viewModelOf(::ThemeViewModel)
 }
