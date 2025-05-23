@@ -22,13 +22,12 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.cryptostats.R
 import com.example.cryptostats.core.presentation.util.PreviewLightAndDark
-import com.example.cryptostats.crypto.presentation.coin_list.CoinListAction
 import com.example.cryptostats.ui.theme.CryptoStatsTheme
 
 @Composable
 fun TryAgainButton(
     message: String,
-    onAction: (CoinListAction) -> Unit,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val composition by rememberLottieComposition(
@@ -52,7 +51,7 @@ fun TryAgainButton(
             modifier = Modifier.padding(16.dp)
         )
         Button(
-            onClick = { onAction(CoinListAction.OnRefresh) },
+            onClick = onClick,
             colors = ButtonColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -78,7 +77,7 @@ private fun TryAgainScreenPreview() {
         Surface {
             TryAgainButton(
                 message = "No internet connection",
-                onAction = {}
+                onClick = {}
             )
         }
     }

@@ -84,7 +84,10 @@ class CoinRepoImpl(
     override suspend fun saveFavoriteCoin(id: String) = coinDao.saveFavoriteCoin(FavoriteCoin(id))
 
     override fun getFavoriteCoins(): Flow<List<String>> =
-        coinDao.getFavoriteCoins().map { coinEntities -> coinEntities.map { it.toString() } }
+        coinDao.getFavoriteCoins().map { coinEntities ->
+            coinEntities.map { it.id.toString() }
+        }
+
 
     override fun isCoinFavorite(id: String): Flow<Boolean> = coinDao.isCoinFavorite(id)
 

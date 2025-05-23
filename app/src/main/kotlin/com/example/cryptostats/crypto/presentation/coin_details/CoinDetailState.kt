@@ -8,6 +8,6 @@ import com.example.cryptostats.crypto.presentation.models.CoinUI
 data class CoinDetailState(
     val isLoading: Boolean = true,
     val isFavorite: Boolean = false,
-    val selectedCoin: CoinUI? = null,
+    val coin: CoinUI? = null,
     val errorMessage: NetworkError? = null,
 )

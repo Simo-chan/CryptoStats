@@ -34,24 +34,32 @@ import com.example.cryptostats.crypto.presentation.coin_list.components.ScrollUp
 import com.example.cryptostats.crypto.presentation.coin_list.components.ShimmerLoadingList
 import com.example.cryptostats.crypto.presentation.coin_list.components.TryAgainButton
 import com.example.cryptostats.crypto.presentation.coin_list.components.previewCoin
+import com.example.cryptostats.crypto.presentation.models.CoinUI
 import com.example.cryptostats.ui.theme.CryptoStatsTheme
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CoinListScreen(
-    modifier: Modifier = Modifier,
-    onAction: (CoinListAction) -> Unit,
-    coinListViewModel: CoinListViewModel = koinViewModel(),
+    onCoinClick: (CoinUI) -> Unit,
+    onSearchButtonClick: () -> Unit,
+    viewModel: CoinListViewModel = koinViewModel(),
     themeViewModel: ThemeViewModel = koinViewModel(),
 ) {
     val themeState by themeViewModel.themeState.collectAsStateWithLifecycle()
-    val state by coinListViewModel.state.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     CoinListScreenContent(
         state = state,
         isDarkTheme = themeState.isDarkTheme,
-        onAction = onAction,
-        onThemeChange = themeViewModel::onAction
+        onThemeChange = themeViewModel::onAction,
+        onAction = { action ->
+            when (action) {
+                is CoinListAction.OnCoinClick -> onCoinClick(action.coin)
+                is CoinListAction.OnSearchButtonClick -> onSearchButtonClick()
+                else -> Unit
+            }
+            viewModel.onAction(action)
+        }
     )
 }
 
@@ -62,7 +70,6 @@ private fun CoinListScreenContent(
     onAction: (CoinListAction) -> Unit,
     onThemeChange: (ThemeAction) -> Unit,
     isDarkTheme: Boolean,
-    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
 
@@ -83,12 +90,12 @@ private fun CoinListScreenContent(
         }
     ) { innerPadding ->
         when {
-            state.isLoading -> ShimmerLoadingList(modifier = modifier.padding(innerPadding))
+            state.isLoading -> ShimmerLoadingList(modifier = Modifier.padding(innerPadding))
 
             state.errorMessage != null -> TryAgainButton(
                 message = state.errorMessage.toDisplayableMessage(context),
-                onAction = onAction,
-                modifier = modifier.padding(innerPadding)
+                onClick = { onAction(CoinListAction.OnRefresh) },
+                modifier = Modifier.padding(innerPadding)
             )
 
             else ->
@@ -96,7 +103,7 @@ private fun CoinListScreenContent(
                     state = state,
                     listState = listState,
                     onAction = onAction,
-                    modifier = modifier.padding(innerPadding)
+                    modifier = Modifier.padding(innerPadding)
                 )
         }
     }
@@ -157,7 +164,7 @@ private fun FavoriteCoinList(
             CoinListItem(
                 coinUI = coinUI,
                 onClick = { onAction(CoinListAction.OnCoinClick(coinUI)) },
-                modifier = Modifier.padding(16.dp)
+                modifier = modifier.padding(16.dp)
             )
         }
     }

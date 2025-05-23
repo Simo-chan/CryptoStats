@@ -10,7 +10,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.cryptostats.core.navigation.AdaptiveCoinListDetailPane
+import com.example.cryptostats.core.navigation.NavigationGraph
 import com.example.cryptostats.core.presentation.ThemeViewModel
 import com.example.cryptostats.ui.theme.CryptoStatsTheme
 import org.koin.androidx.compose.koinViewModel
@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
                     animationSpec = tween(1000)
                 ) { isDarkTheme ->
                     CryptoStatsTheme(darkTheme = isDarkTheme) {
-                        AdaptiveCoinListDetailPane()
+                        NavigationGraph()
                     }
                 }
             }
