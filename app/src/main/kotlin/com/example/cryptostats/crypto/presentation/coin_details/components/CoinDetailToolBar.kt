@@ -20,13 +20,14 @@ import com.example.cryptostats.R
 fun CoinDetailToolBar(
     scrollBehavior: TopAppBarScrollBehavior,
     onFavoriteClick: () -> Unit,
+    onBackClick: () -> Unit,
     isFavorite: Boolean,
     modifier: Modifier = Modifier,
 ) {
     TopAppBar(
         title = {},
         navigationIcon = {
-            IconButton(onClick = {}) {
+            IconButton(onClick = onBackClick) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
                     contentDescription = stringResource(R.string.navigate_back)

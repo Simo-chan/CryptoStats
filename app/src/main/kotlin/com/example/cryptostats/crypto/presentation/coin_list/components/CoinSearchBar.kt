@@ -29,7 +29,7 @@ import com.example.cryptostats.core.presentation.util.toDisplayableMessage
 import com.example.cryptostats.crypto.presentation.coin_list.CoinListAction
 import com.example.cryptostats.crypto.presentation.coin_list.CoinListState
 
-@OptIn(ExperimentalMaterial3Api::class)
+/*@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CoinSearchBar(
     onHideClick: () -> Unit,
@@ -102,4 +102,4 @@ fun CoinSearchBar(
             }
         }
     }
-}
+}*/
