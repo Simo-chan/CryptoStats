@@ -30,6 +30,7 @@ import com.example.cryptostats.core.presentation.ThemeViewModel
 import com.example.cryptostats.core.presentation.util.toDisplayableMessage
 import com.example.cryptostats.crypto.presentation.coin_list.components.CoinListItem
 import com.example.cryptostats.crypto.presentation.coin_list.components.CoinListToolBar
+import com.example.cryptostats.crypto.presentation.coin_list.components.FavoriteCoinCard
 import com.example.cryptostats.crypto.presentation.coin_list.components.ScrollUpFAB
 import com.example.cryptostats.crypto.presentation.coin_list.components.ShimmerLoadingList
 import com.example.cryptostats.crypto.presentation.coin_list.components.TryAgainButton
@@ -161,7 +162,7 @@ private fun FavoriteCoinList(
         items(
             items = state.favoriteCoins
         ) { coinUI ->
-            CoinListItem(
+            FavoriteCoinCard(
                 coinUI = coinUI,
                 onClick = { onAction(CoinListAction.OnCoinClick(coinUI)) },
                 modifier = modifier.padding(16.dp)

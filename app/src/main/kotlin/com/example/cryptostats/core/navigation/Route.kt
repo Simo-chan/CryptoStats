@@ -3,7 +3,6 @@ package com.example.cryptostats.core.navigation
 import kotlinx.serialization.Serializable
 
 sealed interface Route {
-
     @Serializable
     data object CoinGraph : Route
 

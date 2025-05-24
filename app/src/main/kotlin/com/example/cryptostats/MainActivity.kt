@@ -10,6 +10,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.compose.rememberNavController
 import com.example.cryptostats.core.navigation.NavigationGraph
 import com.example.cryptostats.core.presentation.ThemeViewModel
 import com.example.cryptostats.ui.theme.CryptoStatsTheme
@@ -29,6 +30,7 @@ class MainActivity : ComponentActivity() {
             }
         }
         setContent {
+            val navController = rememberNavController()
             val viewModel: ThemeViewModel = koinViewModel()
             val themeState by viewModel.themeState.collectAsStateWithLifecycle()
 
@@ -38,7 +40,7 @@ class MainActivity : ComponentActivity() {
                     animationSpec = tween(1000)
                 ) { isDarkTheme ->
                     CryptoStatsTheme(darkTheme = isDarkTheme) {
-                        NavigationGraph()
+                        NavigationGraph(navController)
                     }
                 }
             }

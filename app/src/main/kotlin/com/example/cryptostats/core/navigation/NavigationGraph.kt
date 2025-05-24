@@ -6,30 +6,26 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import com.example.cryptostats.core.presentation.ThemeViewModel
 import com.example.cryptostats.crypto.presentation.SelectedCoinViewModel
 import com.example.cryptostats.crypto.presentation.coin_details.CoinDetailAction
 import com.example.cryptostats.crypto.presentation.coin_details.CoinDetailScreen
 import com.example.cryptostats.crypto.presentation.coin_details.CoinDetailViewModel
 import com.example.cryptostats.crypto.presentation.coin_list.CoinListScreen
-import com.example.cryptostats.crypto.presentation.coin_list.CoinListViewModel
 import com.example.cryptostats.crypto.presentation.coin_search.SearchScreen
-import com.example.cryptostats.crypto.presentation.coin_search.SearchViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun NavigationGraph() {
-    val navController = rememberNavController()
+fun NavigationGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
         startDestination = Route.CoinGraph
@@ -39,8 +35,6 @@ fun NavigationGraph() {
                 enterTransition = { slideInHorizontally() },
                 exitTransition = { slideOutHorizontally() }
             ) {
-                val viewModel = koinViewModel<CoinListViewModel>()
-                val themeViewModel = koinViewModel<ThemeViewModel>()
                 val selectedViewModel = it.sharedKoinViewModel<SelectedCoinViewModel>(navController)
 
                 LaunchedEffect(true) {
@@ -48,8 +42,6 @@ fun NavigationGraph() {
                 }
 
                 CoinListScreen(
-                    viewModel = viewModel,
-                    themeViewModel = themeViewModel,
                     onCoinClick = { coin ->
                         selectedViewModel.onSelectCoin(coin)
                         navController.navigate(
@@ -63,6 +55,7 @@ fun NavigationGraph() {
                     }
                 )
             }
+
             composable<Route.CoinDetails>(
                 enterTransition = {
                     slideInHorizontally { initialOffset ->
@@ -86,21 +79,38 @@ fun NavigationGraph() {
                 }
 
                 CoinDetailScreen(
-                    viewModel = viewModel,
                     onBackClick = {
-                        navController.navigate(Route.CoinList)
+                        navController.popBackStack(
+                            route = Route.CoinList,
+                            inclusive = false
+                        )
                     }
                 )
             }
+
             composable<Route.CoinSearch>(
                 enterTransition = { expandHorizontally() },
                 exitTransition = { shrinkHorizontally() }) {
-                val viewModel = koinViewModel<SearchViewModel>()
-                //TODO() add onCoinClick
+
+                val selectedViewModel = it.sharedKoinViewModel<SelectedCoinViewModel>(navController)
+
+                LaunchedEffect(true) {
+                    selectedViewModel.onSelectCoin(null)
+                }
+
                 SearchScreen(
-                    viewModel = viewModel,
-                    onBackClick = { navController.navigateUp() },
-                    onCoinClick = {}
+                    onBackClick = {
+                        navController.popBackStack(
+                            route = Route.CoinList,
+                            inclusive = false
+                        )
+                    },
+                    onCoinClick = { coin ->
+                        selectedViewModel.onSelectCoin(coin)
+                        navController.navigate(
+                            Route.CoinDetails(coin.id)
+                        )
+                    }
                 )
             }
         }
