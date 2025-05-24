@@ -1,5 +1,6 @@
 package com.example.cryptostats.crypto.presentation.coin_list
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cryptostats.core.domain.util.onError
@@ -26,6 +27,10 @@ class CoinListViewModel(
     init {
         getCoins()
         observeFavoriteCoins()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
     }
 
     fun onAction(action: CoinListAction) {

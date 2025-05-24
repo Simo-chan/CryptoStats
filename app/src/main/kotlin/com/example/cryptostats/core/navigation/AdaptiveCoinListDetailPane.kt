@@ -9,12 +9,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.cryptostats.crypto.presentation.coin_details.CoinDetailScreen
 import com.example.cryptostats.crypto.presentation.coin_details.CoinDetailViewModel
 import com.example.cryptostats.crypto.presentation.coin_list.CoinListScreen
 import com.example.cryptostats.crypto.presentation.coin_list.CoinListViewModel
 import org.koin.androidx.compose.koinViewModel
 
-/*@OptIn(ExperimentalMaterial3AdaptiveApi::class)
+@OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 fun AdaptiveCoinListDetailPane(
     modifier: Modifier = Modifier,
@@ -32,14 +33,19 @@ fun AdaptiveCoinListDetailPane(
         navigator = navigator,
         listPane = {
             AnimatedPane {
-                CoinListScreen()
+                CoinListScreen(
+                    onCoinClick = {},
+                    onSearchButtonClick = {}
+                )
             }
         },
         detailPane = {
             AnimatedPane {
-                CoinDetailScreenContent()
+                CoinDetailScreen(
+                    onBackClick = {}
+                )
             }
         },
         modifier = modifier
     )
-}*/
+}
