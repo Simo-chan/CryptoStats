@@ -34,7 +34,6 @@ fun CoinDetailToolBar(
     onFavoriteClick: () -> Unit,
     onBackClick: () -> Unit,
     isFavorite: Boolean,
-    modifier: Modifier = Modifier,
 ) {
     TopAppBar(
         title = {},
