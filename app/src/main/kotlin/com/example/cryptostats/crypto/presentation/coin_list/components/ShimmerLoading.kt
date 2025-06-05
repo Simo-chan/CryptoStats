@@ -113,8 +113,8 @@ private fun LoadingRowItem(
     Box(
         modifier = Modifier
             .size(
-                height = 160.dp,
-                width = 160.dp
+                height = 190.dp,
+                width = 180.dp
             )
             .background(
                 shape = RoundedCornerShape(32.dp),

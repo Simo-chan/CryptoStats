@@ -62,7 +62,7 @@ class CoinDetailViewModel(
         coinRepo
             .getCoinHistory(
                 coinId,
-                startTime = ZonedDateTime.now().minusDays(5),
+                startTime = ZonedDateTime.now().minusDays(10),
                 endTime = ZonedDateTime.now()
             )
             .onSuccess { history ->
@@ -73,7 +73,7 @@ class CoinDetailViewModel(
                             x = it.time.hour.toFloat(),
                             y = it.priceUsd.toFloat(),
                             xLabel = DateTimeFormatter
-                                .ofPattern("ha\nM/d")
+                                .ofPattern("kk:mm\nd/M")
                                 .format(it.time)
                         )
                     }

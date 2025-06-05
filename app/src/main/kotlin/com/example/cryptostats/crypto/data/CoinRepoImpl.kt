@@ -72,7 +72,7 @@ class CoinRepoImpl(
             httpClient.get(
                 urlString = constructUrl("$ALL_COINS_ENDPOINT/$coinId/$PRICE_HISTORY_ENDPOINT")
             ) {
-                parameter("interval", "h6")
+                parameter("interval", "h12")
                 parameter("start", startMillis)
                 parameter("end", endMillis)
             }

@@ -45,13 +45,7 @@ fun InfoCard(
     )
     Card(
         modifier = modifier
-            .padding(8.dp)
-            .shadow(
-                elevation = 15.dp,
-                shape = RectangleShape,
-                ambientColor = MaterialTheme.colorScheme.primary,
-                spotColor = MaterialTheme.colorScheme.primary
-            ),
+            .padding(8.dp),
         shape = RoundedCornerShape(32.dp),
         border = BorderStroke(
             width = 1.dp,

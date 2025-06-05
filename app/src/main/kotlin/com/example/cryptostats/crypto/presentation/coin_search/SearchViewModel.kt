@@ -50,7 +50,13 @@ class SearchViewModel(
             .onEach { query ->
                 when {
                     query.isBlank() ->
-                        _state.update { it.copy(searchError = null, searchResults = emptyList()) }
+                        _state.update {
+                            it.copy(
+                                searchError = null,
+                                searchResults = emptyList(),
+                                isSearchResultEmpty = false
+                            )
+                        }
 
                     query.isNotEmpty() -> {
                         searchJob?.cancel()
@@ -64,19 +70,31 @@ class SearchViewModel(
         _state.update {
             it.copy(
                 isSearching = true,
-                searchError = null
+                searchError = null,
+                isSearchResultEmpty = false
             )
         }
 
         coinRepo
             .searchCoins(query)
             .onSuccess { coins ->
-                _state.update {
-                    it.copy(
-                        isSearching = false,
-                        searchResults = coins.map { it.toCoinUI() }
-                    )
+                if (coins.isNotEmpty()) {
+                    _state.update {
+                        it.copy(
+                            isSearching = false,
+                            searchResults = coins.map { it.toCoinUI() }
+                        )
+                    }
+                } else {
+                    _state.update {
+                        it.copy(
+                            isSearching = false,
+                            isSearchResultEmpty = true,
+                            searchResults = emptyList()
+                        )
+                    }
                 }
+
             }
             .onError { error ->
                 _state.update {

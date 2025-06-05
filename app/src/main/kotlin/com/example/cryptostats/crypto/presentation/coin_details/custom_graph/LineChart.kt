@@ -1,5 +1,7 @@
 package com.example.cryptostats.crypto.presentation.coin_details.custom_graph
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
@@ -17,8 +19,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathMeasure
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
@@ -77,6 +81,27 @@ fun LineChart(
     }
     var isShowingDataPoints by remember {
         mutableStateOf(selectedDataPoint != null)
+    }
+
+    //Graph's line specs
+    val chartLinePath = remember { Path() }
+    val pathMeasure = remember { PathMeasure() }
+    val pathSegment = remember { Path() }
+    val filledSegment = remember { Path() }
+    val animationProgress = remember {
+        Animatable(0f)
+    }
+    LaunchedEffect(key1 = Unit) {
+        animationProgress.animateTo(
+            1f,
+            animationSpec = tween(1000)
+        )
+    }
+    val gradientColors = remember {
+        listOf(
+            style.chartLineColor.copy(alpha = 0.4f),
+            Color.Transparent
+        )
     }
 
     Canvas(
@@ -235,11 +260,7 @@ fun LineChart(
                     x = x,
                     y = y
                 ),
-                color = if (index == selectedDataPointIndex) {
-                    style.selectedColor
-                } else {
-                    style.unselectedColor
-                }
+                color = style.unselectedColor
             )
 
             if (showHelperLines) {
@@ -284,7 +305,8 @@ fun LineChart(
             connectionPoint2.add(DataPoint(x, y2, ""))
         }
 
-        val linePath = Path().apply {
+        chartLinePath.reset()
+        chartLinePath.apply {
             if (drawPoints.isNotEmpty()) {
                 moveTo(drawPoints.first().x, drawPoints.first().y)
 
@@ -300,14 +322,43 @@ fun LineChart(
                 }
             }
         }
+
+        pathMeasure.setPath(chartLinePath, false)
+        pathMeasure.getSegment(0f, pathMeasure.length * animationProgress.value, pathSegment)
+
+        if (drawPoints.isNotEmpty()) {
+            val progress = animationProgress.value
+            val animatedChartLinePath = Path()
+            pathMeasure.getSegment(0f, pathMeasure.length * progress, animatedChartLinePath)
+
+            filledSegment.addPath(animatedChartLinePath)
+            if (animatedChartLinePath.isEmpty.not()) {
+                val lastPointX =
+                    if (progress == 1f) drawPoints.last().x else pathMeasure.getPosition(pathMeasure.length * progress).x
+                filledSegment.lineTo(lastPointX, viewPortBottomY)
+                filledSegment.lineTo(drawPoints.first().x, viewPortBottomY)
+                filledSegment.close()
+            }
+        }
+
         drawPath(
-            path = linePath,
+            path = filledSegment,
+            brush = Brush.verticalGradient(
+                colors = gradientColors,
+                startY = viewPortTopY,
+                endY = viewPortBottomY
+            )
+        )
+
+        drawPath(
+            path = pathSegment,
             color = style.chartLineColor,
             style = Stroke(
                 width = 5f,
-                cap = StrokeCap.Round
+                cap = StrokeCap.Round,
             )
         )
+
         drawPoints.forEachIndexed { index, point ->
             if (isShowingDataPoints) {
                 val circleOffset = Offset(
@@ -316,19 +367,19 @@ fun LineChart(
                 )
                 drawCircle(
                     color = style.selectedColor,
-                    radius = 10f,
+                    radius = 8f,
                     center = circleOffset
                 )
 
                 if (selectedDataPointIndex == index) {
                     drawCircle(
                         color = Color.White,
-                        radius = 10f,
+                        radius = 8f,
                         center = circleOffset
                     )
                     drawCircle(
                         color = style.selectedColor,
-                        radius = 10f,
+                        radius = 8f,
                         center = circleOffset,
                         style = Stroke(
                             width = 1.5f
@@ -354,7 +405,7 @@ private fun getSelectedDataPointIndex(
 
 @Preview(widthDp = 1000)
 @Composable
-private fun LineChartPreview(modifier: Modifier = Modifier) {
+private fun LineChartPreview() {
     CryptoStatsTheme(true) {
         val coinHistoryMock = remember {
             (1..20).map {

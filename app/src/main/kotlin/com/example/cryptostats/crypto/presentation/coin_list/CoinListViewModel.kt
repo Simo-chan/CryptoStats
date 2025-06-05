@@ -1,6 +1,5 @@
 package com.example.cryptostats.crypto.presentation.coin_list
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cryptostats.core.domain.util.onError
@@ -68,7 +67,6 @@ class CoinListViewModel(
             }
     }
 
-    //TODO() make it maybe more graceful
     private fun observeFavoriteCoins() {
         observeFavoriteCoinsJob?.cancel()
         observeFavoriteCoinsJob =
