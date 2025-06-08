@@ -9,6 +9,7 @@ import com.example.cryptostats.core.domain.util.onSuccess
 import com.example.cryptostats.core.navigation.Route
 import com.example.cryptostats.crypto.domain.CoinRepo
 import com.example.cryptostats.crypto.presentation.coin_details.custom_graph.DataPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -29,7 +30,7 @@ class CoinDetailViewModel(
     val state = _state.asStateFlow()
 
     init {
-        getCoinDetails()
+        getPriceHistory()
         observeFavoriteStatus()
     }
 
@@ -49,21 +50,31 @@ class CoinDetailViewModel(
                 _state.update { it.copy(coin = action.coin) }
             }
 
+            is CoinDetailAction.OnChipSelectionChange -> {
+                if (state.value.selectedChip != action.chip) {
+                    _state.update { it.copy(selectedChip = action.chip) }
+                    getPriceHistory()
+                }
+            }
+
             is CoinDetailAction.OnRefresh -> {
-                getCoinDetails()
+                getPriceHistory()
             }
 
             else -> Unit
         }
     }
 
-    private fun getCoinDetails() = viewModelScope.launch {
+    private fun getPriceHistory() = viewModelScope.launch {
         _state.update { it.copy(isLoading = true, errorMessage = null) }
+        delay(200)
+        val interval = state.value.selectedChip.value
         coinRepo
             .getCoinHistory(
                 coinId,
-                startTime = ZonedDateTime.now().minusDays(5),
-                endTime = ZonedDateTime.now()
+                startTime = ZonedDateTime.now().minusDays(10),
+                endTime = ZonedDateTime.now(),
+                interval = interval
             )
             .onSuccess { history ->
                 val dataPoints = history
@@ -73,7 +84,7 @@ class CoinDetailViewModel(
                             x = it.time.hour.toFloat(),
                             y = it.priceUsd.toFloat(),
                             xLabel = DateTimeFormatter
-                                .ofPattern("ha\nM/d")
+                                .ofPattern("kk:mm\nd/M")
                                 .format(it.time)
                         )
                     }

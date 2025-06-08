@@ -17,9 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -45,13 +43,7 @@ fun InfoCard(
     )
     Card(
         modifier = modifier
-            .padding(8.dp)
-            .shadow(
-                elevation = 15.dp,
-                shape = RectangleShape,
-                ambientColor = MaterialTheme.colorScheme.primary,
-                spotColor = MaterialTheme.colorScheme.primary
-            ),
+            .padding(8.dp),
         shape = RoundedCornerShape(32.dp),
         border = BorderStroke(
             width = 1.dp,

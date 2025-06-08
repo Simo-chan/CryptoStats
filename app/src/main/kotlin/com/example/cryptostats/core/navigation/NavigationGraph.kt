@@ -1,13 +1,17 @@
 package com.example.cryptostats.core.navigation
 
-import androidx.compose.animation.expandHorizontally
-import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
@@ -32,8 +36,10 @@ fun NavigationGraph(navController: NavHostController) {
     ) {
         navigation<Route.CoinGraph>(startDestination = Route.CoinList) {
             composable<Route.CoinList>(
-                enterTransition = { slideInHorizontally() },
-                exitTransition = { slideOutHorizontally() }
+                enterTransition = { null },
+                exitTransition = { null },
+                popEnterTransition = { null },
+                popExitTransition = { null }
             ) {
                 val selectedViewModel = it.sharedKoinViewModel<SelectedCoinViewModel>(navController)
 
@@ -58,14 +64,28 @@ fun NavigationGraph(navController: NavHostController) {
 
             composable<Route.CoinDetails>(
                 enterTransition = {
-                    slideInHorizontally { initialOffset ->
-                        initialOffset
-                    }
+                    slideInHorizontally(
+                        initialOffsetX = { it },
+                        animationSpec = tween(700)
+                    ) + fadeIn(animationSpec = tween(700))
                 },
                 exitTransition = {
-                    slideOutHorizontally { initialOffset ->
-                        initialOffset
-                    }
+                    slideOutHorizontally(
+                        targetOffsetX = { it },
+                        animationSpec = tween(700)
+                    ) + fadeOut(animationSpec = tween(700))
+                },
+                popEnterTransition = {
+                    slideInHorizontally(
+                        initialOffsetX = { it },
+                        animationSpec = tween(700)
+                    ) + fadeIn(animationSpec = tween(700))
+                },
+                popExitTransition = {
+                    slideOutHorizontally(
+                        targetOffsetX = { it },
+                        animationSpec = tween(700)
+                    ) + fadeOut(animationSpec = tween(700))
                 }
             ) {
                 val viewModel = koinViewModel<CoinDetailViewModel>()
@@ -89,9 +109,21 @@ fun NavigationGraph(navController: NavHostController) {
             }
 
             composable<Route.CoinSearch>(
-                enterTransition = { expandHorizontally() },
-                exitTransition = { shrinkHorizontally() }) {
-
+                enterTransition = {
+                    expandVertically(
+                        expandFrom = Alignment.Top,
+                        initialHeight = { 0 },
+                        animationSpec = tween(700)
+                    )
+                },
+                popExitTransition = {
+                    shrinkVertically(
+                        shrinkTowards = Alignment.Top,
+                        targetHeight = { 0 },
+                        animationSpec = tween(700)
+                    )
+                }
+            ) {
                 val selectedViewModel = it.sharedKoinViewModel<SelectedCoinViewModel>(navController)
 
                 LaunchedEffect(true) {
@@ -118,7 +150,7 @@ fun NavigationGraph(navController: NavHostController) {
 }
 
 @Composable
-private inline fun <reified T : ViewModel> NavBackStackEntry.sharedKoinViewModel(
+inline fun <reified T : ViewModel> NavBackStackEntry.sharedKoinViewModel(
     navController: NavController,
 ): T {
     val navGraphRoute = destination.parent?.route ?: return koinViewModel<T>()

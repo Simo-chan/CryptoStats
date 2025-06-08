@@ -9,5 +9,6 @@ data class SearchState(
     val searchResults: List<CoinUI> = emptyList(),
     val searchQuery: String = "",
     val isSearching: Boolean = false,
+    val isSearchResultEmpty: Boolean = false,
     val searchError: NetworkError? = null,
 )

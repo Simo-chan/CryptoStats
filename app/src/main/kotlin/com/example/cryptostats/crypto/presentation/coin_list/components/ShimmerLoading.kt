@@ -32,7 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -41,9 +41,9 @@ import com.example.cryptostats.ui.theme.CryptoStatsTheme
 
 @Composable
 fun ShimmerLoadingList(modifier: Modifier = Modifier) {
-    val config = LocalConfiguration.current
-    val screenHeight = config.screenHeightDp
-    val screenWidth = config.screenWidthDp
+    val config = LocalWindowInfo.current.containerSize
+    val screenHeight = config.height
+    val screenWidth = config.width
     val columnItemCount = remember(screenHeight) {
         (screenHeight / 50)
     }
@@ -107,14 +107,13 @@ fun ShimmerLoadingList(modifier: Modifier = Modifier) {
 @Composable
 private fun LoadingRowItem(
     alpha: Float,
-    modifier: Modifier = Modifier,
 ) {
     Spacer(Modifier.padding(horizontal = 4.dp))
     Box(
         modifier = Modifier
             .size(
-                height = 160.dp,
-                width = 160.dp
+                height = 190.dp,
+                width = 180.dp
             )
             .background(
                 shape = RoundedCornerShape(32.dp),
@@ -127,7 +126,6 @@ private fun LoadingRowItem(
 @Composable
 private fun LoadingColumnItem(
     alpha: Float,
-    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = Modifier

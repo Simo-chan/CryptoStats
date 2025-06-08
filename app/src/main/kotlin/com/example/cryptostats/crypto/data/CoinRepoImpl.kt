@@ -58,6 +58,7 @@ class CoinRepoImpl(
         coinId: String,
         startTime: ZonedDateTime,
         endTime: ZonedDateTime,
+        inerval: String
     ): Result<List<CoinPrice>, NetworkError> {
         val startMillis = startTime
             .withZoneSameInstant(ZoneId.of(TIME_ZONE))
@@ -72,7 +73,7 @@ class CoinRepoImpl(
             httpClient.get(
                 urlString = constructUrl("$ALL_COINS_ENDPOINT/$coinId/$PRICE_HISTORY_ENDPOINT")
             ) {
-                parameter("interval", "h6")
+                parameter("interval", inerval)
                 parameter("start", startMillis)
                 parameter("end", endMillis)
             }

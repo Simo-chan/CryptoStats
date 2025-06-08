@@ -1,6 +1,5 @@
 package com.example.cryptostats.crypto.presentation.coin_list
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cryptostats.core.domain.util.onError
@@ -8,6 +7,7 @@ import com.example.cryptostats.core.domain.util.onSuccess
 import com.example.cryptostats.crypto.domain.CoinRepo
 import com.example.cryptostats.crypto.presentation.models.toCoinUI
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -50,6 +50,7 @@ class CoinListViewModel(
                 errorMessage = null
             )
         }
+        delay(200)
 
         coinRepo
             .getCoins()
@@ -68,7 +69,6 @@ class CoinListViewModel(
             }
     }
 
-    //TODO() make it maybe more graceful
     private fun observeFavoriteCoins() {
         observeFavoriteCoinsJob?.cancel()
         observeFavoriteCoinsJob =

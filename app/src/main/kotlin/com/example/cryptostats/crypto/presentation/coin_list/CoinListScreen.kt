@@ -2,7 +2,9 @@ package com.example.cryptostats.crypto.presentation.coin_list
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
@@ -138,6 +140,7 @@ private fun CoinList(
                 style = MaterialTheme.typography.headlineLarge,
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
+                    .padding(top = 16.dp)
             )
         }
         items(
@@ -156,7 +159,6 @@ private fun CoinList(
 private fun FavoriteCoinList(
     state: CoinListState,
     onAction: (CoinListAction) -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     LazyRow(contentPadding = PaddingValues(horizontal = 8.dp)) {
         items(
@@ -165,7 +167,9 @@ private fun FavoriteCoinList(
             FavoriteCoinCard(
                 coinUI = coinUI,
                 onClick = { onAction(CoinListAction.OnCoinClick(coinUI)) },
-                modifier = modifier.padding(16.dp)
+                modifier = Modifier
+                    .width(180.dp)
+                    .height(190.dp)
             )
         }
     }
