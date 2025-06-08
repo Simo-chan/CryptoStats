@@ -40,7 +40,7 @@ import com.example.cryptostats.R
 import com.example.cryptostats.ui.theme.CryptoStatsTheme
 
 @Composable
-fun ShimmerLoadingList() {
+fun ShimmerLoadingList(modifier: Modifier = Modifier) {
     val config = LocalWindowInfo.current.containerSize
     val screenHeight = config.height
     val screenWidth = config.width

@@ -4,6 +4,7 @@ package com.example.cryptostats.crypto.presentation.coin_details
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -22,7 +23,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,19 +30,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.cryptostats.R
 import com.example.cryptostats.core.presentation.util.toDisplayableMessage
+import com.example.cryptostats.crypto.presentation.coin_details.components.ChipGroup
+import com.example.cryptostats.crypto.presentation.coin_details.components.Chips
 import com.example.cryptostats.crypto.presentation.coin_details.components.CoinDetailToolBar
+import com.example.cryptostats.crypto.presentation.coin_details.components.InfoCard
 import com.example.cryptostats.crypto.presentation.coin_details.custom_graph.ChartStyle
 import com.example.cryptostats.crypto.presentation.coin_details.custom_graph.DataPoint
 import com.example.cryptostats.crypto.presentation.coin_details.custom_graph.LineChart
 import com.example.cryptostats.crypto.presentation.coin_list.components.TryAgainButton
 import com.example.cryptostats.crypto.presentation.models.CoinUI
+import com.example.cryptostats.crypto.presentation.models.toDisplayableNumber
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -83,15 +89,6 @@ private fun CoinDetailScreenContent(
         }
     ) { innerPadding ->
         when {
-            state.isLoading -> Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-
             state.errorMessage != null -> TryAgainButton(
                 message = state.errorMessage.toDisplayableMessage(context),
                 onClick = { onAction(CoinDetailAction.OnRefresh) },
@@ -101,6 +98,9 @@ private fun CoinDetailScreenContent(
             else -> state.coin?.let {
                 CoinDetails(
                     coin = it,
+                    selectedChip = state.selectedChip,
+                    onChipSelectionChange = { onAction(CoinDetailAction.OnChipSelectionChange(it)) },
+                    isLoading = state.isLoading,
                     modifier = Modifier.padding(innerPadding)
                 )
             }
@@ -111,6 +111,9 @@ private fun CoinDetailScreenContent(
 @Composable
 private fun CoinDetails(
     coin: CoinUI,
+    selectedChip: Chips,
+    onChipSelectionChange: (Chips) -> Unit,
+    isLoading: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -140,14 +143,42 @@ private fun CoinDetails(
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.outline
         )
-        LineChart(coin)
-
+        LineChart(coin = coin, isLoading = isLoading)
+        ChipGroup(
+            selectedChip = selectedChip,
+            onChipSelectionChange = onChipSelectionChange,
+        )
+        Row {
+            InfoCard(
+                title = stringResource(R.string.market_cap),
+                formattedText = "$ ${coin.marketCapUsd.formatted}",
+                icon = ImageVector.vectorResource(R.drawable.stock)
+            )
+            val absoluteChangeFormatted =
+                (coin.priceUsd.value * (coin.changePercent24Hr.value / 100))
+                    .toDisplayableNumber()
+            val isPositive = coin.changePercent24Hr.value > 0.0
+            val contentColor = if (isPositive) {
+                Color.Green
+            } else {
+                MaterialTheme.colorScheme.error
+            }
+            InfoCard(
+                title = stringResource(id = R.string.change_24h),
+                formattedText = "$${absoluteChangeFormatted.formatted}",
+                icon = if (isPositive) {
+                    ImageVector.vectorResource(id = R.drawable.trending)
+                } else {
+                    ImageVector.vectorResource(id = R.drawable.trending_down)
+                },
+                contentColor = contentColor
+            )
+        }
     }
 }
 
 @Composable
-private fun LineChart(coin: CoinUI) {
-    var showHelperLines by rememberSaveable { mutableStateOf(true) }
+private fun LineChart(coin: CoinUI, isLoading: Boolean) {
     var selectedDataPoint by remember {
         mutableStateOf<DataPoint?>(null)
     }
@@ -165,34 +196,45 @@ private fun LineChart(coin: CoinUI) {
     val startIndex = (coin.coinPriceHistory.lastIndex - amountOfVisibleDataPoints)
         .coerceAtLeast(0)
 
-    LineChart(
-        dataPoints = coin.coinPriceHistory,
-        style = ChartStyle(
-            chartLineColor = MaterialTheme.colorScheme.primary,
-            unselectedColor = MaterialTheme.colorScheme.secondary.copy(
-                alpha = 0.3f
+    if (isLoading) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .aspectRatio(16 / 9f)
+                .onSizeChanged { totalChartWidth = it.width.toFloat() },
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
+    } else {
+        LineChart(
+            dataPoints = coin.coinPriceHistory,
+            style = ChartStyle(
+                chartLineColor = MaterialTheme.colorScheme.primary,
+                unselectedColor = MaterialTheme.colorScheme.secondary.copy(
+                    alpha = 0.3f
+                ),
+                selectedColor = MaterialTheme.colorScheme.primary,
+                helperLinesThicknessPx = 1f,
+                axisLinesThicknessPx = 5f,
+                labelFontSize = 14.sp,
+                minYLabelSpacing = 25.dp,
+                verticalPadding = 16.dp,
+                horizontalPadding = 8.dp,
+                xAxisLabelSpacing = 8.dp
             ),
-            selectedColor = MaterialTheme.colorScheme.primary,
-            helperLinesThicknessPx = 1f,
-            axisLinesThicknessPx = 5f,
-            labelFontSize = 14.sp,
-            minYLabelSpacing = 25.dp,
-            verticalPadding = 16.dp,
-            horizontalPadding = 8.dp,
-            xAxisLabelSpacing = 8.dp
-        ),
-        visibleDataPointsIndices = startIndex..coin.coinPriceHistory.lastIndex,
-        unit = "$",
-        modifier = Modifier
-            .fillMaxSize()
-            .aspectRatio(16 / 9f)
-            .onSizeChanged { totalChartWidth = it.width.toFloat() },
-        selectedDataPoint = selectedDataPoint,
-        onSelectedDataPoint = {
-            selectedDataPoint = it
-        },
-        onXLabelWidthChange = { labelWidth = it },
-        showHelperLines = showHelperLines
-    )
+            visibleDataPointsIndices = startIndex..coin.coinPriceHistory.lastIndex,
+            unit = "$",
+            modifier = Modifier
+                .fillMaxSize()
+                .aspectRatio(16 / 9f)
+                .onSizeChanged { totalChartWidth = it.width.toFloat() },
+            selectedDataPoint = selectedDataPoint,
+            onSelectedDataPoint = {
+                selectedDataPoint = it
+            },
+            onXLabelWidthChange = { labelWidth = it },
+        )
+    }
 }
 

@@ -12,6 +12,7 @@ interface CoinRepo {
         coinId: String,
         startTime: ZonedDateTime,
         endTime: ZonedDateTime,
+        interval: String
     ): Result<List<CoinPrice>, NetworkError>
 
     suspend fun saveFavoriteCoin(id: String)

@@ -19,4 +19,7 @@
     <string name="navigate_back">Navigate back\n</string>
     <string name="mark_fav">Mark as favorite\n</string>
     <string name="nothing_found">Nothing found\n</string>
+    <string name="h24">24h\n</string>
+    <string name="h12">12h\n</string>
+    <string name="h6">6h\n</string>
 </resources>

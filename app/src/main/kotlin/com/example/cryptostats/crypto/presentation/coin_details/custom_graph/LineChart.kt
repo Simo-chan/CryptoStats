@@ -306,6 +306,9 @@ fun LineChart(
         }
 
         chartLinePath.reset()
+        pathSegment.reset()
+        filledSegment.reset()
+
         chartLinePath.apply {
             if (drawPoints.isNotEmpty()) {
                 moveTo(drawPoints.first().x, drawPoints.first().y)
@@ -374,12 +377,12 @@ fun LineChart(
                 if (selectedDataPointIndex == index) {
                     drawCircle(
                         color = Color.White,
-                        radius = 8f,
+                        radius = 10f,
                         center = circleOffset
                     )
                     drawCircle(
                         color = style.selectedColor,
-                        radius = 8f,
+                        radius = 10f,
                         center = circleOffset,
                         style = Stroke(
                             width = 1.5f
