@@ -65,7 +65,7 @@ fun Chip(
     onClick: () -> Unit,
 ) {
     val backgroundColor by animateColorAsState(
-        targetValue = if (isSelected) Color.Gray.copy(alpha = 0.3f)
+        targetValue = if (isSelected) Color.Gray.copy(0.4f)
         else MaterialTheme.colorScheme.surface,
         animationSpec = tween(durationMillis = 600, easing = LinearOutSlowInEasing)
     )

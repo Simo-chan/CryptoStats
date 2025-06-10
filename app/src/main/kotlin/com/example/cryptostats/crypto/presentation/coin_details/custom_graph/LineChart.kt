@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -54,32 +55,32 @@ fun LineChart(
     val textStyle = LocalTextStyle.current.copy(
         fontSize = style.labelFontSize
     )
-    val visibleDataPoints = remember(dataPoints, visibleDataPointsIndices) {
+    val visibleDataPoints = rememberSaveable(dataPoints, visibleDataPointsIndices) {
         dataPoints.slice(visibleDataPointsIndices)
     }
-    val maxYValue = remember(visibleDataPoints) {
+    val maxYValue = rememberSaveable(visibleDataPoints) {
         visibleDataPoints.maxOfOrNull { it.y } ?: 0f
     }
-    val minYValue = remember(visibleDataPoints) {
+    val minYValue = rememberSaveable(visibleDataPoints) {
         visibleDataPoints.minOfOrNull { it.y } ?: 0f
     }
 
     val measurer = rememberTextMeasurer()
 
-    var xLabelWidth by remember {
+    var xLabelWidth by rememberSaveable {
         mutableFloatStateOf(0f)
     }
     LaunchedEffect(key1 = xLabelWidth) {
         onXLabelWidthChange(xLabelWidth)
     }
 
-    val selectedDataPointIndex = remember(selectedDataPoint) {
+    val selectedDataPointIndex = rememberSaveable(selectedDataPoint) {
         dataPoints.indexOf(selectedDataPoint)
     }
-    var drawPoints by remember {
+    var drawPoints by rememberSaveable {
         mutableStateOf(listOf<DataPoint>())
     }
-    var isShowingDataPoints by remember {
+    var isShowingDataPoints by rememberSaveable {
         mutableStateOf(selectedDataPoint != null)
     }
 

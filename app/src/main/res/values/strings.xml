@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CryptoStats</string>
+    <string name="app_name" translatable="false">CryptoStats</string>
     <string name="error_request_timeout">Request timeout</string>
     <string name="error_too_many_requests">Too many requests \n</string>
     <string name="error_no_internet">No internet connection\n</string>
