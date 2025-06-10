@@ -30,8 +30,8 @@ class CoinDetailViewModel(
     val state = _state.asStateFlow()
 
     init {
-        getPriceHistory()
         observeFavoriteStatus()
+        getPriceHistory()
     }
 
     fun onAction(action: CoinDetailAction) {
@@ -47,6 +47,7 @@ class CoinDetailViewModel(
             }
 
             is CoinDetailAction.OnSelectedCoinChange -> {
+                if (state.value.coin?.coinPriceHistory == null)
                 _state.update { it.copy(coin = action.coin) }
             }
 

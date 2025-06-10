@@ -13,6 +13,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -49,6 +50,7 @@ import com.example.cryptostats.crypto.presentation.coin_details.custom_graph.Lin
 import com.example.cryptostats.crypto.presentation.coin_list.components.TryAgainButton
 import com.example.cryptostats.crypto.presentation.models.CoinUI
 import com.example.cryptostats.crypto.presentation.models.toDisplayableNumber
+import com.example.cryptostats.ui.theme.brightGreen
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -148,6 +150,7 @@ private fun CoinDetails(
             selectedChip = selectedChip,
             onChipSelectionChange = onChipSelectionChange,
         )
+        HorizontalDivider(modifier = Modifier.padding(16.dp))
         Row {
             InfoCard(
                 title = stringResource(R.string.market_cap),
@@ -159,7 +162,7 @@ private fun CoinDetails(
                     .toDisplayableNumber()
             val isPositive = coin.changePercent24Hr.value > 0.0
             val contentColor = if (isPositive) {
-                Color.Green
+                brightGreen
             } else {
                 MaterialTheme.colorScheme.error
             }
@@ -167,7 +170,7 @@ private fun CoinDetails(
                 title = stringResource(id = R.string.change_24h),
                 formattedText = "$${absoluteChangeFormatted.formatted}",
                 icon = if (isPositive) {
-                    ImageVector.vectorResource(id = R.drawable.trending)
+                    ImageVector.vectorResource(id = R.drawable.trending_up)
                 } else {
                     ImageVector.vectorResource(id = R.drawable.trending_down)
                 },

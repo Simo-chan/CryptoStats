@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.google.devtools.ksp)
+    id("org.jetbrains.kotlin.plugin.parcelize")
 }
 
 val localProperties = Properties()
@@ -14,12 +15,12 @@ localProperties.load(project.rootProject.file("local.properties").inputStream())
 
 android {
     namespace = "com.example.cryptostats"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.cryptostats"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -33,13 +34,14 @@ android {
             buildConfigField("String", "BASE_URL", "\"https://rest.coincap.io/v3/\"")
         }
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
 
             buildConfigField("String", "BASE_URL", "\"https://rest.coincap.io/v3/\"")
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -83,4 +85,9 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.navigation.compose)
     ksp(libs.androidx.room.compiler)
+
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+    implementation(libs.androidx.adaptive.navigation3)
 }
