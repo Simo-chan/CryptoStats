@@ -43,6 +43,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CoinListScreen(
+    modifier: Modifier = Modifier,
     onCoinClick: (CoinUI) -> Unit,
     onSearchButtonClick: () -> Unit,
     viewModel: CoinListViewModel = koinViewModel(),
@@ -129,7 +130,10 @@ private fun CoinList(
                 Text(
                     text = stringResource(R.string.favorites),
                     style = MaterialTheme.typography.headlineLarge,
-                    modifier = Modifier.padding(horizontal = 16.dp)
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 16.dp),
+                    maxLines = 1
                 )
             }
             item { FavoriteCoinList(state = state, onAction = onAction) }
@@ -139,8 +143,9 @@ private fun CoinList(
                 text = stringResource(R.string.top100),
                 style = MaterialTheme.typography.headlineLarge,
                 modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .padding(top = 16.dp)
+                    .padding(16.dp)
+                    .padding(top = 16.dp),
+                maxLines = 1
             )
         }
         items(

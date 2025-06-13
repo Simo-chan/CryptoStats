@@ -3,6 +3,7 @@ adaptiveNavigation3 = "1.0.0-SNAPSHOT"
 agp = "8.9.3"
 coreSplashscreen = "1.0.1"
 datastorePreferences = "1.1.7"
+glanceAppwidget = "1.1.1"
 kotlin = "2.0.21"
 ksp-version = "2.0.21-1.0.27"
 coreKtx = "1.16.0"
@@ -28,6 +29,8 @@ androidx-adaptive-navigation3 = { module = "androidx.compose.material3.adaptive:
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
+androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "glanceAppwidget" }
+androidx-glance-material3 = { module = "androidx.glance:glance-material3", version.ref = "glanceAppwidget" }
 androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycleViewmodelNavigation3" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "navigation3Runtime" }

@@ -203,7 +203,7 @@ private fun LineChart(coin: CoinUI, isLoading: Boolean) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .aspectRatio(16 / 9f)
+                .aspectRatio(16 / 10f)
                 .onSizeChanged { totalChartWidth = it.width.toFloat() },
             contentAlignment = Alignment.Center
         ) {
@@ -230,7 +230,7 @@ private fun LineChart(coin: CoinUI, isLoading: Boolean) {
             unit = "$",
             modifier = Modifier
                 .fillMaxSize()
-                .aspectRatio(16 / 9f)
+                .aspectRatio(16 / 10f)
                 .onSizeChanged { totalChartWidth = it.width.toFloat() },
             selectedDataPoint = selectedDataPoint,
             onSelectedDataPoint = {

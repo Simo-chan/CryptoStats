@@ -20,7 +20,7 @@ class UserPreferencesRepoImpl(private val context: Context) : UserPreferencesRep
     }
 
     override val getCurrentTheme: Flow<Boolean> = context.dataStore.data.map { preferences ->
-        preferences[IS_DARK_THEME_KEY] == true
+        preferences[IS_DARK_THEME_KEY] ?: true
     }
 
     private companion object {

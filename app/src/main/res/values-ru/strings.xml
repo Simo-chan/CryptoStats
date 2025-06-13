@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_request_timeout">Время запроса истекло</string>
+    <string name="error_too_many_requests">Слишком много запросов</string>
+    <string name="error_no_internet">Нет доступа к Интернету</string>
+    <string name="error_server">Что-то не так с сервером</string>
+    <string name="error_unknown">Что-то пошло не так, попробуйте заново</string>
+    <string name="market_cap">Капитализация</string>
+    <string name="price">Цена</string>
+    <string name="change_24h">Изменение за 24ч</string>
+    <string name="favorites">Избранное</string>
+    <string name="top100">Топ 100</string>
+    <string name="try_again">Попробуйте заново</string>
+    <string name="search">Поиск</string>
+    <string name="change_theme">Сменить тему</string>
+    <string name="search_hint">Поиск монет...</string>
+    <string name="close_hint">Очистить поиск</string>
+    <string name="close_search">Закрыть поисковик</string>
+    <string name="navigate_back">Вернуться назад</string>
+    <string name="mark_fav">Добавить в избрнанное</string>
+    <string name="nothing_found">Ничего не найдено</string>
+    <string name="h24">24ч</string>
+    <string name="h12">12ч</string>
+    <string name="h6">6ч</string>
+</resources>

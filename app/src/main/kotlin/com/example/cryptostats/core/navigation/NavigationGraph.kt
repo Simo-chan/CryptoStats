@@ -46,7 +46,6 @@ fun NavigationGraph(navController: NavHostController) {
                 LaunchedEffect(true) {
                     selectedViewModel.onSelectCoin(null)
                 }
-
                 CoinListScreen(
                     onCoinClick = { coin ->
                         selectedViewModel.onSelectCoin(coin)
@@ -89,7 +88,8 @@ fun NavigationGraph(navController: NavHostController) {
                 }
             ) {
                 val viewModel = koinViewModel<CoinDetailViewModel>()
-                val selectedViewModel = it.sharedKoinViewModel<SelectedCoinViewModel>(navController)
+                val selectedViewModel =
+                    it.sharedKoinViewModel<SelectedCoinViewModel>(navController)
                 val selectedCoin by selectedViewModel.selectedCoin.collectAsStateWithLifecycle()
 
                 LaunchedEffect(selectedCoin) {

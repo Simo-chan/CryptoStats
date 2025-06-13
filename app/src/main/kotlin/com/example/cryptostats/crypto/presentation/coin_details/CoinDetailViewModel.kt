@@ -48,7 +48,7 @@ class CoinDetailViewModel(
 
             is CoinDetailAction.OnSelectedCoinChange -> {
                 if (state.value.coin?.coinPriceHistory == null)
-                _state.update { it.copy(coin = action.coin) }
+                    _state.update { it.copy(coin = action.coin) }
             }
 
             is CoinDetailAction.OnChipSelectionChange -> {
