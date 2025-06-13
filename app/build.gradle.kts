@@ -8,7 +8,6 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.google.devtools.ksp)
-    id("org.jetbrains.kotlin.plugin.parcelize")
 }
 
 val localProperties = Properties()
@@ -68,16 +67,18 @@ dependencies {
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 
-    implementation(libs.bundles.koin)
-
-    implementation(libs.bundles.ktor)
-
     testImplementation(libs.junit)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+
+    //Koin
+    implementation(libs.bundles.koin)
+
+    //Ktor
+    implementation(libs.bundles.ktor)
 
     //Lottie animation
     implementation(libs.lottie.compose)
@@ -95,17 +96,4 @@ dependencies {
     //Compose navigation
     implementation(libs.androidx.navigation.compose)
     ksp(libs.androidx.room.compiler)
-
-    //New navigation 3 library
-    implementation(libs.androidx.navigation3.runtime)
-    implementation(libs.androidx.navigation3.ui)
-    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
-    implementation(libs.androidx.adaptive.navigation3)
-
-    //Glance widgets
-    implementation (libs.androidx.glance.appwidget)
-    implementation (libs.androidx.glance.material3)
-
-    //Leak canary
-    debugImplementation ("com.squareup.leakcanary:leakcanary-android:2.14")
 }

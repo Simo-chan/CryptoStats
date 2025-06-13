@@ -1,9 +1,7 @@
 [versions]
-adaptiveNavigation3 = "1.0.0-SNAPSHOT"
 agp = "8.9.3"
 coreSplashscreen = "1.0.1"
 datastorePreferences = "1.1.7"
-glanceAppwidget = "1.1.1"
 kotlin = "2.0.21"
 ksp-version = "2.0.21-1.0.27"
 coreKtx = "1.16.0"
@@ -16,25 +14,17 @@ composeBom = "2025.06.00"
 desugar-jdk-libs = "2.1.5"
 ktor = "2.3.12"
 koin = "3.5.6"
-lifecycleViewmodelNavigation3 = "1.0.0-alpha01"
 lottieCompose = "6.3.0"
 material3-adaptive = "1.1.0"
 compose-material-icons-extended = "1.7.8"
-navigation3Runtime = "1.0.0-alpha03"
 navigationCompose = "2.9.0"
 roomRuntime = "2.7.1"
 
 [libraries]
-androidx-adaptive-navigation3 = { module = "androidx.compose.material3.adaptive:adaptive-navigation3", version.ref = "adaptiveNavigation3" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
-androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "glanceAppwidget" }
-androidx-glance-material3 = { module = "androidx.glance:glance-material3", version.ref = "glanceAppwidget" }
-androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycleViewmodelNavigation3" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
-androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "navigation3Runtime" }
-androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "navigation3Runtime" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }

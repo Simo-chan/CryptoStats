@@ -43,7 +43,6 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CoinListScreen(
-    modifier: Modifier = Modifier,
     onCoinClick: (CoinUI) -> Unit,
     onSearchButtonClick: () -> Unit,
     viewModel: CoinListViewModel = koinViewModel(),
