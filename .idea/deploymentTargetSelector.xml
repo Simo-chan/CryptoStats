@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="CryptoStats.app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-06-10T17:03:10.104317200Z">
+        <DropdownSelection timestamp="2025-06-12T13:39:36.231853300Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="PhysicalDevice" identifier="serial=A7QXVB1A16030214" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\semyo\.android\avd\Pixel_8_API_33.avd" />
             </handle>
           </Target>
         </DropdownSelection>

@@ -1,3 +1,4 @@
+import org.gradle.kotlin.dsl.debugImplementation
 import org.gradle.kotlin.dsl.implementation
 import org.jetbrains.kotlin.konan.properties.Properties
 
@@ -78,16 +79,33 @@ dependencies {
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
 
+    //Lottie animation
     implementation(libs.lottie.compose)
+
+    //Data store
     implementation(libs.androidx.datastore.preferences)
+
+    //Splash screen
     implementation(libs.androidx.core.splashscreen)
+
+    //Room db
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+
+    //Compose navigation
     implementation(libs.androidx.navigation.compose)
     ksp(libs.androidx.room.compiler)
 
+    //New navigation 3 library
     implementation(libs.androidx.navigation3.runtime)
     implementation(libs.androidx.navigation3.ui)
     implementation(libs.androidx.lifecycle.viewmodel.navigation3)
     implementation(libs.androidx.adaptive.navigation3)
+
+    //Glance widgets
+    implementation (libs.androidx.glance.appwidget)
+    implementation (libs.androidx.glance.material3)
+
+    //Leak canary
+    debugImplementation ("com.squareup.leakcanary:leakcanary-android:2.14")
 }

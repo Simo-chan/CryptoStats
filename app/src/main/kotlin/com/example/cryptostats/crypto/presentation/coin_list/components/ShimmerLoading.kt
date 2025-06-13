@@ -69,6 +69,7 @@ fun ShimmerLoadingList(modifier: Modifier = Modifier) {
         modifier = Modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.background)
+            .padding(top = 48.dp)
     ) {
         item {
             Text(
@@ -77,6 +78,8 @@ fun ShimmerLoadingList(modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .padding(top = 45.dp)
                     .padding(horizontal = 16.dp)
+                    .padding(bottom = 16.dp),
+                maxLines = 1
             )
         }
 
@@ -94,7 +97,8 @@ fun ShimmerLoadingList(modifier: Modifier = Modifier) {
                 style = MaterialTheme.typography.headlineLarge,
                 modifier = Modifier
                     .padding(top = 45.dp)
-                    .padding(horizontal = 16.dp)
+                    .padding(horizontal = 16.dp),
+                maxLines = 1
             )
         }
 

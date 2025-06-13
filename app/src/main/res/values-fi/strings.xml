@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nothing_found">Ei mitään</string>
+    <string name="h24">24t</string>
+    <string name="h12">12t</string>
+    <string name="h6">6t</string>
+    <string name="change_theme">Vaihtaa teeman</string>
+    <string name="search_hint">Kollikoiden haku</string>
+    <string name="close_hint">Tyhjentää haun</string>
+    <string name="close_search">Sulkea hakupalkin</string>
+    <string name="navigate_back">Palata takaisin</string>
+    <string name="error_request_timeout">Pyyntö serveriin on vanhentunut</string>
+    <string name="mark_fav">Lisätä suosikkiin</string>
+    <string name="price">Hinta</string>
+    <string name="change_24h">Vaihdos 24t</string>
+    <string name="favorites">Suosikit</string>
+    <string name="error_unknown">Jotain meni väärin, yrittää uudelleen</string>
+    <string name="market_cap">Kapitalisaatio</string>
+    <string name="error_too_many_requests">Liian paljon pyyntöjä</string>
+    <string name="error_no_internet">Ei ole netti yhteyttä</string>
+    <string name="top100">Top 100</string>
+    <string name="try_again">Yrittää uudelleen</string>
+    <string name="search">Haku</string>
+    <string name="error_server">Jotain meni väärin serverissa</string>
+</resources>
