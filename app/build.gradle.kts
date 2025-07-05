@@ -14,11 +14,11 @@ val localProperties = Properties()
 localProperties.load(project.rootProject.file("local.properties").inputStream())
 
 android {
-    namespace = "com.example.cryptostats"
+    namespace = "com.simochan.cryptostats"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.cryptostats"
+        applicationId = "com.simochan.cryptostats"
         minSdk = 26
         targetSdk = 36
         versionCode = 1
@@ -66,6 +66,7 @@ dependencies {
     debugImplementation(libs.bundles.compose.debug)
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
+    implementation(libs.slf4j.nop)
 
     testImplementation(libs.junit)
 
