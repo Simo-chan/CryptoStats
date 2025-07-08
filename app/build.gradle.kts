@@ -97,4 +97,8 @@ dependencies {
     //Compose navigation
     implementation(libs.androidx.navigation.compose)
     ksp(libs.androidx.room.compiler)
+
+    //Glance
+    implementation(libs.androidx.glance.appwidget)
+    implementation(libs.androidx.glance.material3)
 }

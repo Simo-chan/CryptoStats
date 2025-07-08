@@ -2,12 +2,12 @@
 <project version="4">
   <component name="deploymentTargetSelector">
     <selectionStates>
-      <SelectionState runConfigName="CryptoStats.app">
+      <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-06-12T13:39:36.231853300Z">
+        <DropdownSelection timestamp="2025-07-07T18:51:28.868976300Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\semyo\.android\avd\Pixel_8_API_33.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Simo\.android\avd\Pixel_8.avd" />
             </handle>
           </Target>
         </DropdownSelection>

@@ -22,4 +22,5 @@
     <string name="try_again">Yrittää uudelleen</string>
     <string name="search">Haku</string>
     <string name="error_server">Jotain meni väärin serverissa</string>
+    <string name="widget_description">Suosikki lista</string>
 </resources>

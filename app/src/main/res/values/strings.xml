@@ -22,4 +22,5 @@
     <string name="h24">24h\n</string>
     <string name="h12">12h\n</string>
     <string name="h6">6h\n</string>
+    <string name="widget_description">List of favorites</string>
 </resources>
