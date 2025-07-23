@@ -14,3 +14,7 @@ Search crypto coins
 
 Dynamic theme change that persists across configurations changes and app process death
 [Theme change.webm](https://github.com/user-attachments/assets/58c24375-274b-406f-a17c-2b7503a365e6)
+
+Demo
+![CryptoStats Demo1](https://github.com/user-attachments/assets/c07681dc-c364-44c2-9edb-7dc46ae7cbad)
+
