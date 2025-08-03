@@ -1,5 +1,5 @@
 # CryptoStats 
--is a simple cryptocurrency tracker for everyday use, that was build using Kotlin, Coroutines, Ktor and etc.
+-is a simple cryptocurrency tracker for everyday use, that was build using Kotlin, Coroutines, Ktor and etc. (full list down below)
 
 
 ## Overview
@@ -21,17 +21,40 @@ Next, if you save at least one coin to favorites a second list will appear on to
 ![Add to favorites demo](https://github.com/user-attachments/assets/d4af096e-3a46-49fd-8363-3411e5b526b8)
 
 
-If for some reason you have no internet connection or something went wrong on the server, you can first enjoy :100:nice lottie animation and then try to load data again.
+If for some reason you have no internet connection :skull: or something went wrong on the server, you can first enjoy :100: nice lottie animation and then try to load data again.
 
 ![No internet demo](https://github.com/user-attachments/assets/47844d48-9aa7-4224-b2ea-2920d09bbdda)
 
 
 - **<ins>Details screen</ins>**
 
-Now we are approaching the crown jewel of the app and that is the beautiful and shining :sparkling_heart:chart graph built from scratch using Canvas API. The graph is drawn with wonderful animation and shows relevant price history of a coin for either 6h, 12h or 24h period. You can also, using drag gesture, see more specific price at a given period of time. Apart from the graph there's also a star button which will add the coin to the favorite list when pressed and on the bottom of the screen the coin's market cap and 24h price change are shown.
+Now we are approaching the crown jewel of the app and that is the beautiful and shining :sparkling_heart:chart graph:sparkling_heart: built from scratch using Canvas API. The graph is drawn with wonderful animation and shows relevant price history of a coin for either 6h, 12h or 24h period. You can also, using drag gesture, see more specific price at a given hour. Apart from the graph there's also a star button which will add the coin to the favorite list when pressed and on the bottom of the screen the coin's market cap and 24h price change are shown.
 
 ![Graph demo](https://github.com/user-attachments/assets/d938fe16-a1ac-49b2-b089-d39676c32838)
 
+
+- **<ins>Search screen</ins>**
+
+On the search screen you can search for a specific coin so you don't have to do it manually. The search bar has a convinient button to clear the search. If no result is found you'll be met with another nice lottie animation that also moves with consideration of available space, so it's not accidentally hidden behind the keyboard. 
+
 ![SearchScreen demo](https://github.com/user-attachments/assets/31bcabc8-20b5-4fe5-b4c9-9ad3137704c1)
+
+
+And that's about it.
+
+**Full list of libraries/technologies that were used:**
+- Kotlin
+- Jetpack Compose
+- Coroutines
+- Coroutines Flow
+- Compose Navigation
+- Room
+- Ktor
+- Koin
+- Lottie Compose
+- Splash screes
+- Data store
+- MVI
+- Clean architecture
 
 
