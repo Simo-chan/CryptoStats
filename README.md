@@ -1,4 +1,4 @@
-# CryptoStats ([Google Play link]([https://play.google.com/store/apps/details?id=com.simochan.cryptostats]))
+# CryptoStats ([Google Play link](https://play.google.com/store/apps/details?id=com.simochan.cryptostats))
 -is a simple cryptocurrency tracker for everyday use, that was build using Kotlin, Coroutines, Ktor and etc. (full list down below)
 
 
